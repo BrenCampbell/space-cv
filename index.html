@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brendan Campbell - Interactive CV</title>
+    <meta name="description" content="Explore Brendan Campbell's professional journey through an innovative 3D planet interface">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" as="script">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS Files - Component-based styling -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <style>
+        /* Critical inline styles for loading screen */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: var(--z-background);
+            background-image: url('./assets/images/backgrounds/StarBackground1.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        #space-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: default; /* ADDED: Default cursor for canvas */
+}
+
+#space-canvas.hovering-interactive {
+    cursor: pointer; /* ADDED: Only show pointer when hovering interactive elements */
+}
+
+#space-canvas.planet-rotating {
+    cursor: move;
+}
+
+        /* Scene container */
+        #scene-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: var(--z-scene);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Container -->
+    <div class="background-container"></div>
+
+    <!-- ADD THIS NEW BLACK SCREEN DIV -->
+    <div id="travel-black-screen" class="travel-black-screen hidden"></div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loader">
+                <img src="./assets/images/logos/LogoBW.png" alt="Brendan Campbell Logo" class="loader-logo">
+            </div>
+            <p class="loading-text">Preparing your journey through Brendan's professional solar system...</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WebGL Error Fallback -->
+    <div id="webgl-error" class="overlay hidden">
+        <div class="modal">
+            <div class="modal-close" onclick="this.parentElement.parentElement.classList.add('hidden')">&times;</div>
+            <h2 class="heading-secondary">WebGL Not Supported</h2>
+            <p class="text-secondary">Your browser doesn't support WebGL, which is required for the 3D experience.</p>
+            <p class="text-muted">Please try using a modern browser like Chrome, Firefox, or Safari.</p>
+        </div>
+    </div>
+
+    <!-- Controls Info Panel -->
+    <div id="controls-info" class="ui-panel ui-panel-top-right">
+        <div class="ui-panel-header">
+            <div class="ui-panel-title">🎮 Navigation</div>
+        </div>
+        <div class="ui-panel-body">
+        <div class="text-sm text-secondary">• Drag planet: Rotate planet</div>
+        <div class="text-sm text-secondary">• Click planet: Travel to planet</div>
+        <div class="text-sm text-secondary">• Hover planet: Show info</div>
+    </div>
+</div>
+
+    <!-- Planet Info Panel -->
+    <div id="planet-info" class="panel-holographic panel-bottom-left hidden">
+        <div class="panel-header">
+            <div id="planet-name" class="panel-title">Planet Name</div>
+        </div>
+        <div class="panel-body">
+            <div id="planet-description" class="text-sm">Planet description goes here</div>
+        </div>
+    </div>
+
+    <!-- Main Application Container -->
+    <div id="app">
+        <!-- 3D Scene Container -->
+        <div id="scene-container">
+            <canvas id="space-canvas" class="cursor-grab"></canvas>
+        </div>
+
+        <!-- Content Overlay (Used by Travel System) - UPDATED STRUCTURE -->
+        <div id="content-overlay" class="overlay hidden">
+            <div class="modal modal-with-pinned-footer">
+                <button id="close-content" class="modal-close">&times;</button>
+                
+                <div class="modal-content-wrapper">
+                    <div class="modal-header flex items-center gap-lg">
+                        <h2 id="content-title" class="heading-primary">Content Title</h2>
+                    </div>
+                    
+                    <div id="content-body" class="modal-body">
+                        <!-- Content will be dynamically inserted here -->
+                    </div>
+                </div>
+                
+                <div class="modal-footer-pinned">
+                    <button id="return-to-orbit" class="btn btn-secondary">Return to Orbit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="module" src="components/planets/CareerPlanet.js"></script>
+    <script type="module" src="components/planets/EducationWorld.js"></script>
+    <script type="module" src="components/planets/SkillsAstroid.js"></script>
+    <script type="module" src="components/planets/AchievementStar.js"></script>
+    <script type="module" src="components/planets/CommunitySphere.js"></script>
+    <script type="module" src="components/planets/ContactStation.js"></script>
+    <script type="module" src="components/planets/PortfolioNebula.js"></script>
+    <script type="module" src="components/spaceship/Spaceship.js"></script>
+    <script type="module" src="components/portfolio/PortfolioViewer.js"></script>
+    
+    <script type="module">
+        import { CareerPlanet } from './components/planets/CareerPlanet.js';
+        import { EducationWorld } from './components/planets/EducationWorld.js';
+        import { SkillsAstroid } from './components/planets/SkillsAstroid.js';
+        import { AchievementStar } from './components/planets/AchievementStar.js';
+        import { CommunitySphere } from './components/planets/CommunitySphere.js';
+        import { ContactStation } from './components/planets/ContactStation.js';
+        import { PortfolioNebula } from './components/planets/PortfolioNebula.js';
+        import { Spaceship } from './components/spaceship/Spaceship.js';
+        import { PortfolioViewer } from './components/portfolio/PortfolioViewer.js';
+        
+        // TRAVEL SYSTEM IMPORT
+        import { TravelSystem } from './components/travel/TravelSystem.js';
+
+        // ENHANCED MODAL SYSTEM
+        
+        /**
+         * Planet name mappings for modal headers
+         */
+        const PLANET_NAMES = {
+            'work-planet': 'Career Planet',
+            'education-planet': 'Knowledge World', 
+            'skills-planet': 'Skills Asteroid',
+            'projects-planet': 'Achievement Star',
+            'community-planet': 'Community Sphere',
+            'contact-planet': 'Contact Station',
+            'portfolio-nebula': 'Portfolio Nebula'
+        };
+
+        /**
+         * Planet color mappings for headers
+         */
+        const PLANET_COLORS = {
+            'work-planet': 'planet-career',
+            'education-planet': 'planet-education', 
+            'skills-planet': 'planet-skills',
+            'projects-planet': 'planet-projects',
+            'community-planet': 'planet-community',
+            'contact-planet': 'planet-contact',
+            'portfolio-nebula': 'planet-portfolio'
+        };
+
+        /**
+         * Enhanced method to update content modal with planet-themed styling
+         */
+        function updateContentModal(title, content, planetId) {
+            const contentTitle = document.getElementById('content-title');
+            const contentBody = document.getElementById('content-body');
+            
+            if (contentTitle) {
+                // Use planet name instead of section title
+                const planetName = PLANET_NAMES[planetId] || title;
+                contentTitle.textContent = planetName;
+                
+                // Remove all previous planet color classes
+                contentTitle.classList.remove(
+                    'planet-career', 'planet-education', 'planet-skills', 
+                    'planet-projects', 'planet-community', 'planet-contact', 'planet-portfolio'
+                );
+                
+                // Add the appropriate planet color class
+                const colorClass = PLANET_COLORS[planetId];
+                if (colorClass) {
+                    contentTitle.classList.add(colorClass);
+                }
+            }
+            
+            if (contentBody) {
+                contentBody.innerHTML = content;
+            }
+            
+            // Update footer for travel mode
+            const modalFooter = document.querySelector('.modal-footer-pinned');
+            if (modalFooter) {
+                modalFooter.innerHTML = `
+                    <button id="return-to-orbit" class="btn btn-secondary">Return to Orbit</button>
+                `;
+                
+                // Re-attach event listener
+                const returnBtn = document.getElementById('return-to-orbit');
+                if (returnBtn) {
+                    returnBtn.addEventListener('click', () => {
+                        if (window.spaceCVApp && window.spaceCVApp.travelSystem) {
+                            window.spaceCVApp.travelSystem.returnToOrbit();
+                        } else {
+                            // Fallback
+                            window.spaceCVApp.hideContent();
+                        }
+                    });
+                }
+            }
+        }
+
+        /**
+         * Enhanced planet info positioning system
+         */
+        class EnhancedPlanetInfoPositioning {
+            constructor() {
+                this.planetInfo = document.getElementById('planet-info');
+                this.camera = null;
+                this.scene = null;
+                
+                // Planet position mappings (approximate 2D positions)
+                this.planetPositions = {
+                    'community-planet': { x: -180, y: 20, side: 'below' },
+                    'projects-planet': { x: -90, y: 50, side: 'below' },
+                    'work-planet': { x: 0, y: 60, side: 'below' },
+                    'education-planet': { x: 90, y: 50, side: 'below' },
+                    'skills-planet': { x: 180, y: 20, side: 'below' },
+                    'contact-planet': { x: -120, y: -60, side: 'right' }, // Exception: right side
+                    'portfolio-nebula': { x: 0, y: 5, side: 'below' }
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                console.log('🎯 Enhanced Planet Info Positioning initialized');
+            }
+            
+            /**
+             * Set camera and scene references
+             */
+            setReferences(camera, scene) {
+                this.camera = camera;
+                this.scene = scene;
+            }
+            
+            /**
+             * Position planet info relative to planet
+             */
+            positionPlanetInfo(planetId, planetGroup) {
+                if (!this.planetInfo || !this.camera) return;
+                
+                const planetData = this.planetPositions[planetId];
+                if (!planetData) return;
+                
+                try {
+                    // Get planet's screen position
+                    const planetPosition = planetGroup.position.clone();
+                    planetPosition.project(this.camera);
+                    
+                    // Convert to screen coordinates
+                    const screenX = (planetPosition.x * 0.5 + 0.5) * window.innerWidth;
+                    const screenY = (-planetPosition.y * 0.5 + 0.5) * window.innerHeight;
+                    
+                    // Position based on planet's designated side
+                    this.positionInfoPanel(screenX, screenY, planetData.side, planetId);
+                    
+                } catch (error) {
+                    console.warn('⚠️ Could not position planet info:', error);
+                    // Fallback to default positioning
+                    this.positionInfoPanel(200, 200, 'below', planetId);
+                }
+            }
+            
+            /**
+             * Position the info panel based on calculated screen coordinates
+             */
+            positionInfoPanel(screenX, screenY, side, planetId) {
+                const panelWidth = 260;
+                const panelHeight = 120;
+                const margin = 20;
+                
+                let finalX, finalY;
+                
+                // Clear previous positioning classes
+                this.planetInfo.classList.remove('position-below', 'position-right', 'position-left');
+                
+                switch (side) {
+                case 'right':
+                    // Position to the right (for Contact Station) - MOVED FURTHER RIGHT
+                    finalX = Math.min(screenX + 120, window.innerWidth - panelWidth - margin);
+                    finalY = Math.max(margin, Math.min(screenY - panelHeight/2, window.innerHeight - panelHeight - margin));
+                    this.planetInfo.classList.add('position-right');
+                    break;
+        
+                case 'left':
+                    // Position to the left - MOVED FURTHER LEFT
+                    finalX = Math.max(margin, screenX - panelWidth - 120);
+                    finalY = Math.max(margin, Math.min(screenY - panelHeight/2, window.innerHeight - panelHeight - margin));
+                    this.planetInfo.classList.add('position-left');
+                    break;
+        
+                case 'below':
+                default:
+                    // Position below the planet (default) - MOVED FURTHER DOWN
+                    finalX = Math.max(margin, Math.min(screenX - panelWidth/2, window.innerWidth - panelWidth - margin));
+                    finalY = Math.min(screenY + 100, window.innerHeight - panelHeight - margin);
+                    this.planetInfo.classList.add('position-below');
+                    break;
+            }
+                
+                // Apply positioning
+                this.planetInfo.style.left = `${finalX}px`;
+                this.planetInfo.style.top = `${finalY}px`;
+                this.planetInfo.style.bottom = 'auto';
+                this.planetInfo.style.right = 'auto';
+                
+                console.log(`🎯 Positioned ${planetId} info panel at (${finalX}, ${finalY}) - ${side}`);
+            }
+            
+            /**
+             * Show planet info with enhanced positioning
+             */
+            showPlanetInfo(planet) {
+                if (!this.planetInfo) return;
+                
+                const planetName = document.getElementById('planet-name');
+                const planetDescription = document.getElementById('planet-description');
+                
+                const info = planet.getInfo();
+                
+                // Use planet display names
+                const displayName = PLANET_NAMES[planet.id] || info.name;
+                
+                if (planetName) planetName.textContent = displayName;
+                if (planetDescription) planetDescription.textContent = info.description;
+                
+                // Position the info panel
+                this.positionPlanetInfo(planet.id, planet.getGroup());
+                
+                // Show with animation
+                this.planetInfo.classList.remove('hidden');
+            }
+            
+            /**
+             * Show nebula info with enhanced positioning
+             */
+            showNebulaInfo(nebula) {
+                if (!this.planetInfo) return;
+                
+                const planetName = document.getElementById('planet-name');
+                const planetDescription = document.getElementById('planet-description');
+                
+                if (planetName) planetName.textContent = 'Portfolio Nebula';
+                if (planetDescription) planetDescription.textContent = 'A mystical collection of Brendan\'s creative work and design portfolio';
+                
+                // Position for nebula
+                this.positionPlanetInfo('portfolio-nebula', nebula.getGroup());
+                
+                // Show with animation
+                this.planetInfo.classList.remove('hidden');
+            }
+            
+            /**
+             * Hide planet info
+             */
+            hidePlanetInfo() {
+                if (this.planetInfo) {
+                    this.planetInfo.classList.add('hidden');
+                }
+            }
+        }
+
+        // RETURN TO ORBIT EVENT HANDLER
+        function setupReturnToOrbitHandler() {
+            // Use event delegation to catch dynamically created buttons
+            document.addEventListener('click', function(event) {
+                if (event.target && event.target.id === 'return-to-orbit') {
+                    console.log('🔄 Return to Orbit button clicked');
+                    
+                    event.preventDefault();
+                    event.stopPropagation();
+                    
+                    // Call the travel system's return method
+                    if (window.spaceCVApp && window.spaceCVApp.travelSystem) {
+                        window.spaceCVApp.travelSystem.returnToOrbit();
+                    } else {
+                        console.error('❌ Travel system not found');
+                    }
+                }
+            });
+            
+            console.log('✅ Return to Orbit event handler established');
+        }
+
+        // Complete Space CV Application
+        class CompletSpaceCVApp {
+            constructor() {
+                this.scene = null;
+                this.camera = null;
+                this.renderer = null;
+                this.planets = [];
+                this.portfolioNebula = null;
+                this.spaceship = null;
+                this.clock = new THREE.Clock();
+                this.isLoaded = false;
+                this.animationRunning = false;
+                
+                // Mouse interaction
+                this.mouse = { x: 0, y: 0 };
+                this.isDragging = false;
+                this.dragDistance = 0;
+                this.lastMousePos = { x: undefined, y: undefined };
+                this.mouseDownTime = 0;
+                this.raycaster = new THREE.Raycaster();
+                
+                // Planet-specific rotation
+                this.rotatingPlanet = null;
+                this.isRotatingPlanet = false;
+                
+                // Current content
+                this.currentContent = null;
+                
+                // TRAVEL SYSTEM
+                this.travelSystem = null;
+                
+                // PORTFOLIO VIEWER
+                this.portfolioViewer = null;
+
+                // ENHANCED POSITIONING SYSTEM
+                this.enhancedPositioning = null;
+                
+                // Bound event handlers for cleanup
+                this.boundMouseDown = null;
+                this.boundMouseMove = null;
+                this.boundMouseUp = null;
+                this.boundMouseClick = null;
+                
+                this.init();
+            }
+
+            init() {
+                console.log('🚀 Initializing Complete Space CV Application...');
+                
+                if (!this.checkWebGLSupport()) {
+                    this.showWebGLError();
+                    return;
+                }
+
+                this.startLoadingSequence();
+                
+                setTimeout(() => {
+                    this.initScene();
+                }, 500);
+                
+                this.setupEventListeners();
+            }
+
+            checkWebGLSupport() {
+                try {
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                    return !!context;
+                } catch (e) {
+                    return false;
+                }
+            }
+
+            startLoadingSequence() {
+                const loadingScreen = document.getElementById('loading-screen');
+                const progressBar = document.querySelector('.progress-fill');
+                
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += Math.random() * 15 + 5;
+                    
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(progressInterval);
+                        this.completeLoading();
+                    }
+                    
+                    if (progressBar) {
+                        progressBar.style.width = progress + '%';
+                    }
+                }, 200);
+            }
+
+            completeLoading() {
+                setTimeout(() => {
+                    const loadingScreen = document.getElementById('loading-screen');
+                    if (loadingScreen) {
+                        loadingScreen.classList.add('fade-out');
+                        setTimeout(() => {
+                            loadingScreen.classList.add('hidden');
+                        }, 500);
+                    }
+                    this.isLoaded = true;
+                }, 1000);
+            }
+
+            initScene() {
+                try {
+                    this.setupRenderer();
+                    this.setupScene();
+                    this.setupCamera();
+                    this.setupLighting();
+                    this.createPlanets();
+                    this.createPortfolioNebula();
+                    this.createSpaceship();
+                    
+                    // INITIALIZE ENHANCED POSITIONING SYSTEM
+                    this.enhancedPositioning = new EnhancedPlanetInfoPositioning();
+                    this.enhancedPositioning.setReferences(this.camera, this.scene);
+                    console.log('🎯 Enhanced positioning system initialized');
+                    
+                    // INITIALIZE TRAVEL SYSTEM AFTER SCENE SETUP
+                    this.travelSystem = new TravelSystem(this);
+                    console.log('🚀 Travel System initialized');
+                    
+                    this.startAnimation();
+                    
+                    console.log('✅ Complete scene initialized successfully');
+                } catch (error) {
+                    console.error('❌ Failed to initialize scene:', error);
+                    this.showWebGLError();
+                }
+            }
+
+            setupRenderer() {
+                const canvas = document.getElementById('space-canvas');
+                
+                this.renderer = new THREE.WebGLRenderer({
+                    canvas: canvas,
+                    antialias: true,
+                    alpha: true
+                });
+                
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                this.renderer.setClearColor(0x000000, 0);
+                this.renderer.shadowMap.enabled = true;
+                this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            }
+
+            setupScene() {
+                this.scene = new THREE.Scene();
+            }
+
+            setupCamera() {
+                this.camera = new THREE.PerspectiveCamera(
+                    60,
+                    window.innerWidth / window.innerHeight, 
+                    0.1, 
+                    2000
+                );
+                this.camera.position.set(0, 30, 140);
+                this.camera.lookAt(0, 0, 0);
+            }
+
+            setupLighting() {
+                const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
+                this.scene.add(ambientLight);
+
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+                directionalLight.position.set(100, 100, 100);
+                directionalLight.castShadow = true;
+                this.scene.add(directionalLight);
+
+                this.createStarField();
+            }
+
+            createStarField() {
+                const starGeometry = new THREE.BufferGeometry();
+                const starCount = 2000;
+                const positions = new Float32Array(starCount * 3);
+
+                for (let i = 0; i < starCount; i++) {
+                    positions[i * 3] = (Math.random() - 0.5) * 2000;
+                    positions[i * 3 + 1] = (Math.random() - 0.5) * 2000;
+                    positions[i * 3 + 2] = (Math.random() - 0.5) * 2000;
+                }
+
+                starGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+                const starMaterial = new THREE.PointsMaterial({
+                    color: 0xFFFFFF,
+                    size: 1,
+                    transparent: true,
+                    opacity: 0.8
+                });
+
+                const starField = new THREE.Points(starGeometry, starMaterial);
+                this.scene.add(starField);
+            }
+
+            // Planet positions with spaceship and nebula moved down
+            createPlanets() {
+                console.log('🌍 Creating planets in wide arc formation...');
+                
+                // 1. Far Left - Community Planet
+                const communitySphere = new CommunitySphere(this.scene, { x: -180, y: 20, z: -100 });
+                this.planets.push(communitySphere);
+                
+                // 2. Upper-left - Achievement Star
+                const achievementStar = new AchievementStar(this.scene, { x: -90, y: 50, z: -120 });
+                this.planets.push(achievementStar);
+                
+                // 3. Top center - Career Planet
+                const careerPlanet = new CareerPlanet(this.scene, { x: 0, y: 60, z: -140 });
+                this.planets.push(careerPlanet);
+                
+                // 4. Upper-right - Education World
+                const educationWorld = new EducationWorld(this.scene, { x: 90, y: 50, z: -120 });
+                this.planets.push(educationWorld);
+                
+                // 5. Far Right - Skills Asteroid
+                const skillsAsteroid = new SkillsAstroid(this.scene, { x: 180, y: 20, z: -100 });
+                this.planets.push(skillsAsteroid);
+                
+                // Contact Station
+                const contactStation = new ContactStation(this.scene, { x: -120, y: -60, z: -30 });
+                this.planets.push(contactStation);
+                
+                console.log('✅ Created 6 planets in proper wide arc formation');
+            }
+
+            // Portfolio Nebula moved down
+            createPortfolioNebula() {
+                console.log('💎 Creating Portfolio Nebula...');
+                
+                // MOVED DOWN: Position lower (was y: 15, now y: 5)
+                this.portfolioNebula = new PortfolioNebula(this.scene, { x: 0, y: 5, z: 20 });
+                
+                console.log('✅ Portfolio Nebula created and positioned lower');
+            }
+
+            // Spaceship moved down significantly
+            createSpaceship() {
+                // MOVED DOWN: Position much lower (was y: 5, now y: -15)
+                this.spaceship = new Spaceship(this.scene, { x: 0, y: 0, z: 90 });
+                console.log('🚀 Created spaceship in lower bottom center position');
+            }
+
+            setupEventListeners() {
+                window.addEventListener('resize', this.onWindowResize.bind(this));
+                
+                const canvas = document.getElementById('space-canvas');
+                this.boundMouseDown = this.onMouseDown.bind(this);
+                this.boundMouseMove = this.onMouseMove.bind(this);
+                this.boundMouseUp = this.onMouseUp.bind(this);
+                this.boundMouseClick = this.onMouseClick.bind(this);
+                
+                canvas.addEventListener('mousedown', this.boundMouseDown);
+                canvas.addEventListener('mousemove', this.boundMouseMove);
+                canvas.addEventListener('mouseup', this.boundMouseUp);
+                canvas.addEventListener('click', this.boundMouseClick);
+
+                // Content overlay events - UPDATED TO USE RETURN TO ORBIT LOGIC
+                document.getElementById('close-content').addEventListener('click', () => {
+                    if (this.travelSystem && this.travelSystem.isTraveling()) {
+                        this.travelSystem.returnToOrbit();
+                    } else {
+                        this.hideContent();
+                    }
+                });
+            }
+
+            onWindowResize() {
+                this.camera.aspect = window.innerWidth / window.innerHeight;
+                this.camera.updateProjectionMatrix();
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+
+            onMouseDown(event) {
+                this.isDragging = false;
+                this.dragDistance = 0;
+                this.lastMousePos.x = event.clientX;
+                this.lastMousePos.y = event.clientY;
+                this.mouseDownTime = Date.now();
+                
+                this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+                
+                this.rotatingPlanet = this.getPlanetUnderMouse();
+                if (this.rotatingPlanet) {
+                    this.isRotatingPlanet = true;
+                    this.rotatingPlanet.startRotation(event.clientX, event.clientY);
+                    document.getElementById('space-canvas').classList.add('planet-rotating');
+                }
+            }
+
+            onMouseMove(event) {
+                this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+                if (this.lastMousePos.x !== undefined && this.lastMousePos.y !== undefined) {
+                    const deltaX = event.clientX - this.lastMousePos.x;
+                    const deltaY = event.clientY - this.lastMousePos.y;
+                    
+                    this.dragDistance += Math.abs(deltaX) + Math.abs(deltaY);
+                    
+                    if (this.dragDistance > 5) {
+                        this.isDragging = true;
+                    }
+                    
+                    if (this.isDragging) {
+                        if (this.isRotatingPlanet && this.rotatingPlanet) {
+                            this.rotatingPlanet.updateRotation(event.clientX, event.clientY);
+                        }
+                    }
+                    
+                    this.lastMousePos.x = event.clientX;
+                    this.lastMousePos.y = event.clientY;
+                }
+
+                if (!this.isDragging && !this.isRotatingPlanet) {
+                    this.checkInteractionHover();
+                }
+            }
+
+            onMouseUp() {
+                if (this.isRotatingPlanet && this.rotatingPlanet) {
+                    this.rotatingPlanet.stopRotation();
+                    this.isRotatingPlanet = false;
+                    this.rotatingPlanet = null;
+                    document.getElementById('space-canvas').classList.remove('planet-rotating');
+                }
+                
+                this.isDragging = false;
+                this.dragDistance = 0;
+                this.lastMousePos.x = undefined;
+                this.lastMousePos.y = undefined;
+            }
+
+            onMouseClick(event) {
+                const clickDuration = Date.now() - this.mouseDownTime;
+                
+                setTimeout(() => {
+                    if (this.dragDistance < 5 && clickDuration < 200 && !this.isRotatingPlanet) {
+                        this.checkInteractionClick();
+                    }
+                }, 10);
+            }
+
+            getPlanetUnderMouse() {
+                this.raycaster.setFromCamera(this.mouse, this.camera);
+                
+                for (let planet of this.planets) {
+                    const intersects = this.raycaster.intersectObject(planet.getGroup(), true);
+                    if (intersects.length > 0) {
+                        return planet;
+                    }
+                }
+                return null;
+            }
+
+            checkInteractionHover() {
+                this.raycaster.setFromCamera(this.mouse, this.camera);
+                let hoveredObject = null;
+                
+                // Check planets
+                this.planets.forEach(planet => {
+                    const intersects = this.raycaster.intersectObject(planet.getGroup(), true);
+                    
+                    if (intersects.length > 0) {
+                        hoveredObject = planet;
+                        if (!planet.isHovered) {
+                            planet.onHover(true);
+                            // USE ENHANCED POSITIONING SYSTEM
+                            this.enhancedPositioning.showPlanetInfo(planet);
+                        }
+                    } else if (planet.isHovered) {
+                        planet.onHover(false);
+                    }
+                });
+                
+                // Check Portfolio Nebula
+                if (!hoveredObject && this.portfolioNebula) {
+                    const intersects = this.raycaster.intersectObject(this.portfolioNebula.getHitBox(), false);
+                    if (intersects.length > 0) {
+                        hoveredObject = this.portfolioNebula;
+                        if (!this.portfolioNebula.isHovered) {
+                            this.portfolioNebula.onHover(true);
+                            // USE ENHANCED POSITIONING SYSTEM
+                            this.enhancedPositioning.showNebulaInfo(this.portfolioNebula);
+                        }
+                    } else if (this.portfolioNebula.isHovered) {
+                        this.portfolioNebula.onHover(false);
+                    }
+                }
+                
+                // ENHANCED CURSOR MANAGEMENT
+                    const canvas = document.getElementById('space-canvas');
+                    if (hoveredObject) {
+                        // Add class for CSS-based cursor control
+                        canvas.classList.add('hovering-interactive');
+                        // Fallback for direct style setting
+                        document.body.style.cursor = 'pointer';
+                    } else {
+                        // Remove class and reset cursor
+                        canvas.classList.remove('hovering-interactive');
+                        document.body.style.cursor = 'default';
+                        // USE ENHANCED POSITIONING SYSTEM
+                        this.enhancedPositioning.hidePlanetInfo();
+                    }
+            }
+
+            checkInteractionClick() {
+                this.raycaster.setFromCamera(this.mouse, this.camera);
+                
+                // Check planets first
+                for (const planet of this.planets) {
+                    const intersects = this.raycaster.intersectObject(planet.getGroup(), true);
+                    
+                    if (intersects.length > 0) {
+                        // Use travel system if not currently traveling
+                        if (this.travelSystem && !this.travelSystem.isTraveling()) {
+                            console.log(`🌍 Initiating travel to ${planet.getInfo().name}`);
+                            this.travelSystem.initiatePlanetTravel(planet);
+                        }
+                        return;
+                    }
+                }
+                
+                // Check Portfolio Nebula
+                if (this.portfolioNebula) {
+                    const intersects = this.raycaster.intersectObject(this.portfolioNebula.getHitBox(), false);
+                    if (intersects.length > 0) {
+                        this.portfolioNebula.onClick();
+                        return;
+                    }
+                }
+            }
+
+            // CONTENT METHODS WITH ENHANCED MODAL UPDATES
+            updateContentModalWithPlanet(title, content, planetId) {
+                updateContentModal(title, content, planetId);
+            }
+
+            getWorkContent() {
+                return `
+                    <div class="content-section">
+                        <h3>Professional Journey</h3>
+                        
+                        <div class="content-item">
+                            <div class="content-item-header">
+                                <div>
+                                    <h4 class="content-item-title">Co-founder & Director</h4>
+                                    <span class="content-item-company">Kilonova & GIGiFY</span>
+                                </div>
+                                <span class="content-item-meta">2024 - Present</span>
+                            </div>
+                            <p class="text-secondary">In 2023 I was approached by a commercial attorney to consult on an artist management business. With higher ambition, this project changed trajectory and took the form of an autonomous talent booking, artist management and event management platform as the GIGiFY app.</p>
+                            <ul class="m-lg text-muted">
+                                <li>Business strategy and creative & innovative development</li>
+                                <li>UX & UI design and project oversight</li>
+                                <li>Lead generation and industry partnerships</li>
+                                <li>Secured technical backing with Amazon Web Servers</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-item-header">
+                                <div>
+                                    <h4 class="content-item-title">Head of Production</h4>
+                                    <span class="content-item-company">MUSE Studios</span>
+                                </div>
+                                <span class="content-item-meta">September 2018 - Present</span>
+                            </div>
+                            <p class="text-secondary">Late in 2018 I was offered an opportunity to work out of a newly built, state-of-the-art studio. Since taking on the challenge we have produced multiple award winning recordings and projects.</p>
+                            <ul class="m-lg text-muted">
+                                <li>Composition, arrangement, and artist DNA development</li>
+                                <li>Recording, mixing and artist relations</li>
+                                <li>A&R partnerships with Sony Music, Universal Records, Virgin Records</li>
+                                <li>Discovered and developed chart-topping artists</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-item-header">
+                                <div>
+                                    <h4 class="content-item-title">Co-Founder & Director</h4>
+                                    <span class="content-item-company">Posduif Pty.</span>
+                                </div>
+                                <span class="content-item-meta">2019 - Present</span>
+                            </div>
+                            <p class="text-secondary">Following success in the mainstream English-speaking market, we partnered to branch out into the thriving Afrikaans market. Our debut album was awarded "Best Pop Album" at the prestigious SAMA's.</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            getEducationContent() {
+                return `
+                    <div class="content-section">
+                        <h3>Academic Foundation</h3>
+                        
+                        <div class="content-item">
+                            <div class="content-item-header">
+                                <div>
+                                    <h4 class="content-item-title">Pro Tools 101 & 110</h4>
+                                    <span class="content-item-company">Academy of Sound Engineering</span>
+                                </div>
+                                <span class="content-item-meta">2010 & 2011</span>
+                            </div>
+                            <p class="text-secondary">Professional certification in industry-standard audio production software and techniques.</p>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-item-header">
+                                <div>
+                                    <h4 class="content-item-title">Matric - I.E.B - Exemption Pass</h4>
+                                    <span class="content-item-company">Trinity House High School</span>
+                                </div>
+                                <span class="content-item-meta">2008</span>
+                            </div>
+                            <p class="text-secondary">Independent Examinations Board certification with university exemption.</p>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-item-header">
+                                <div>
+                                    <h4 class="content-item-title">International Baccalaureate Curriculum</h4>
+                                    <span class="content-item-company">Copenhagen International School</span>
+                                </div>
+                                <span class="content-item-meta">2002-2005</span>
+                            </div>
+                            <p class="text-secondary">Grades 4-6 under the IB curriculum, providing international perspective and multilingual education.</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            getSkillsContent() {
+                return `
+                    <div class="content-section">
+                        <h3>Core Technical Competencies</h3>
+                        
+                        <div class="highlight-grid grid-cols-2 gap-lg">
+                            <div class="highlight-item">
+                                <h4>🎯 Problem Solving</h4>
+                                <p class="text-secondary">Exceptional analytical thinking and creative problem-solving abilities, combining logical analysis with innovative approaches.</p>
+                            </div>
+                            <div class="highlight-item">
+                                <h4>🌐 Networking & Communication</h4>
+                                <p class="text-secondary">Extensive industry networks and proven ability to build lasting professional relationships.</p>
+                            </div>
+                            <div class="highlight-item">
+                                <h4>💻 Technology Adaptation</h4>
+                                <p class="text-secondary">Rapid learning and implementation of new technologies, from audio production to business management platforms.</p>
+                            </div>
+                            <div class="highlight-item">
+                                <h4>⚡ Innovation & Work Ethic</h4>
+                                <p class="text-secondary">Strong drive for innovative solutions combined with unwavering work ethic and commitment to excellence.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-number">16+</span>
+                                <span class="stat-label">Years Experience</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">5+</span>
+                                <span class="stat-label">Companies Founded</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">50+</span>
+                                <span class="stat-label">Projects Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            getProjectsContent() {
+                return `
+                    <div class="content-section">
+                        <h3>Recognition & Achievements</h3>
+                        
+                        <div class="content-item">
+                            <h4 class="content-item-title">🏆 Recent Platinum Achievements (2023-2024)</h4>
+                            <p class="text-secondary"><strong>Platinum Selling Singles:</strong> Eloff (2x), Wilma, Baarto, Rubber Duc - Multiple platinum certifications across various artists</p>
+                        </div>
+                        
+                        <div class="content-item">
+                            <h4 class="content-item-title">🎵 Music Awards</h4>
+                            <div class="highlight-grid">
+                                <div class="highlight-item">
+                                    <h4>2022 - Winner AITSA</h4>
+                                    <p class="text-secondary">Afrikaans Music Awards (Eloff)</p>
+                                </div>
+                                <div class="highlight-item">
+                                    <h4>2022 - Winner SAMA</h4>
+                                    <p class="text-secondary">South African Music Awards (Posduif) - Best Pop Album</p>
+                                </div>
+                                <div class="highlight-item">
+                                    <h4>2017 - 2x SAMA Nomination</h4>
+                                    <p class="text-secondary">Rubber Duc - "The Secret Sunrise" album</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-number">8</span>
+                                <span class="stat-label">Platinum Singles</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">5+</span>
+                                <span class="stat-label">Major Labels</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">10+</span>
+                                <span class="stat-label">Awards Won</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            getCommunityContent() {
+                return `
+                    <div class="content-section">
+                        <h3>Giving Back to the Community</h3>
+                        <div class="highlight-item">
+                            <p class="text-accent font-medium">I have always appreciated when someone reaches out and lends a hand in hard times, and I am a strong believer in paying it forward.</p>
+                        </div>
+                        
+                        <div class="content-item">
+                            <h4 class="content-item-title">🏠 RAK (Random Acts of Kindness) Drive</h4>
+                            <p class="text-secondary">Actively involved in painting and renovating homes of the less fortunate in Paarl, Western Cape. This hands-on community outreach project helps improve living conditions for families in need.</p>
+                        </div>
+                        
+                        <div class="content-item">
+                            <h4 class="content-item-title">🎄 Christmas Donation Drives</h4>
+                            <p class="text-secondary">Organize and participate in multiple Christmas donation drives including:</p>
+                            <ul class="m-lg text-muted">
+                                <li>Food & basic grocery parcels for families</li>
+                                <li>Blankets for those in need during winter</li>
+                                <li>Toys for preschools in local townships</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="content-item">
+                            <h4 class="content-item-title">🎵 Music Education & Mentorship</h4>
+                            <p class="text-secondary">Through my work in the music industry, I provide mentorship and guidance to young, up-and-coming artists. We have discovered, developed and written artist DNA for multiple artists who have gone on to achieve chart-topping success.</p>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-number">10+</span>
+                                <span class="stat-label">Artists Mentored</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">100+</span>
+                                <span class="stat-label">Families Helped</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">5+</span>
+                                <span class="stat-label">Years Active</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            getContactContent() {
+                return `
+                    <div class="content-section">
+                        <h3>Let's Connect</h3>
+                        <p class="text-secondary">Ready to collaborate or discuss opportunities? I'd love to hear from you.</p>
+                        
+                        <div class="highlight-grid gap-md">
+                            <div class="highlight-item">
+                                <h4>📧 Email</h4>
+                                <a href="mailto:Productions.brc@gmail.com" class="text-accent">Productions.brc@gmail.com</a>
+                            </div>
+                            <div class="highlight-item">
+                                <h4>📱 Phone</h4>
+                                <a href="tel:+27824550744" class="text-accent">+27 82 455 0744</a>
+                            </div>
+                            <div class="highlight-item">
+                                <h4>📍 Location</h4>
+                                <span class="text-secondary">Johannesburg, South Africa</span>
+                            </div>
+                        </div>
+                        
+                        <div class="content-item">
+                            <h4 class="content-item-title">Available for:</h4>
+                            <ul class="m-lg text-secondary">
+                                <li>🎯 Strategic consulting and business development</li>
+                                <li>🎵 Music production and audio engineering projects</li>
+                                <li>💼 UX/UI design and innovative solution development</li>
+                                <li>🤝 Partnerships and collaborative ventures</li>
+                                <li>🎤 Speaking engagements and industry events</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="highlight-item text-center">
+                            <p class="text-secondary font-medium">"I believe that I will be a valuable addition to your team with the diverse experience I bring. I work well within a team and have extensive networks into which I can tap."</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // PORTFOLIO CONTENT METHOD - This is the key addition
+            getPortfolioContent() {
+                console.log('📱 Getting portfolio content...');
+                
+                // Initialize portfolio viewer if not already done
+                if (!this.portfolioViewer) {
+                    console.log('🖼️ Initializing Portfolio Viewer...');
+                    this.portfolioViewer = new PortfolioViewer();
+                }
+                
+                // Check if portfolio is ready
+                if (!this.portfolioViewer.isReady()) {
+                    console.log('⏳ Portfolio not ready, showing loading state...');
+                    return `
+                        <div class="portfolio-loading">
+                            <div class="portfolio-loading-spinner"></div>
+                            <h3>Loading Portfolio...</h3>
+                            <p>Preparing creative showcase...</p>
+                        </div>
+                    `;
+                }
+                
+                // Return the portfolio content
+                console.log('✅ Portfolio ready, returning content...');
+                return this.portfolioViewer.getPortfolioContent();
+            }
+
+            showContent() {
+                const contentOverlay = document.getElementById('content-overlay');
+                contentOverlay.classList.remove('hidden');
+            }
+
+            hideContent() {
+                const contentOverlay = document.getElementById('content-overlay');
+                contentOverlay.classList.add('hidden');
+                this.currentContent = null;
+            }
+
+            // ANIMATION RESTART METHODS FOR TRAVEL SYSTEM
+            restartAnimations() {
+                console.log('🎬 Restarting all app animations...');
+                
+                // Restart planet animations
+                if (this.planets) {
+                    this.planets.forEach(planet => {
+                        if (planet && planet.clock) {
+                            planet.clock.start();
+                        }
+                        
+                        // Reset animation states
+                        if (planet.baseScale !== undefined) {
+                            planet.baseScale = 1.0;
+                            planet.targetScale = 1.0;
+                        }
+                        
+                        // Reset rotation states
+                        if (planet.isRotating !== undefined) {
+                            planet.isRotating = false;
+                        }
+                        
+                        // Reset hover states
+                        if (planet.isHovered !== undefined) {
+                            planet.isHovered = false;
+                        }
+                    });
+                }
+                
+                // Restart spaceship animations
+                if (this.spaceship && this.spaceship.clock) {
+                    this.spaceship.clock.start();
+                }
+                
+                // Restart nebula animations
+                if (this.portfolioNebula && this.portfolioNebula.clock) {
+                    this.portfolioNebula.clock.start();
+                }
+                
+                // Ensure animation loop is running
+                this.startAnimationLoop();
+                
+                console.log('✅ All app animations restarted');
+            }
+
+            startAnimationLoop() {
+                console.log('🎬 Ensuring animation loop is running...');
+                // The animation loop is already running in startAnimation method
+                // This method ensures it continues running
+                if (!this.animationRunning) {
+                    this.animationRunning = true;
+                    this.startAnimation();
+                }
+            }
+
+            enableInteractions() {
+                console.log('🎮 Re-enabling all interactions...');
+                
+                // Re-setup mouse event listeners
+                this.setupInteractions();
+                
+                // Ensure raycaster is working
+                if (this.raycaster) {
+                    // Reset raycaster if needed
+                    this.raycaster = new THREE.Raycaster();
+                }
+                
+                // Reset any interaction states
+                this.hoveredPlanet = null;
+                this.isDragging = false;
+                this.isRotatingPlanet = false;
+                this.rotatingPlanet = null;
+                
+                // Reset mouse state
+                this.mouse = { x: 0, y: 0 };
+                this.dragDistance = 0;
+                
+                console.log('✅ All interactions re-enabled');
+            }
+
+            setupInteractions() {
+                console.log('🖱️ Setting up fresh planet interactions...');
+                
+                // Remove existing event listeners to prevent duplicates
+                const canvas = document.getElementById('space-canvas');
+                if (canvas) {
+                    // Remove old listeners (if they exist)
+                    if (this.boundMouseDown) {
+                        canvas.removeEventListener('mousedown', this.boundMouseDown);
+                        canvas.removeEventListener('mousemove', this.boundMouseMove);
+                        canvas.removeEventListener('mouseup', this.boundMouseUp);
+                        canvas.removeEventListener('click', this.boundMouseClick);
+                    }
+                    
+                    // Create new bound methods
+                    this.boundMouseDown = this.onMouseDown.bind(this);
+                    this.boundMouseMove = this.onMouseMove.bind(this);
+                    this.boundMouseUp = this.onMouseUp.bind(this);
+                    this.boundMouseClick = this.onMouseClick.bind(this);
+                    
+                    // Add fresh listeners
+                    canvas.addEventListener('mousedown', this.boundMouseDown);
+                    canvas.addEventListener('mousemove', this.boundMouseMove);
+                    canvas.addEventListener('mouseup', this.boundMouseUp);
+                    canvas.addEventListener('click', this.boundMouseClick);
+                    
+                    // Ensure canvas is interactive
+                    canvas.style.pointerEvents = 'auto';
+                    
+                    console.log('✅ Fresh interaction listeners added');
+                }
+            }
+
+            checkAnimationHealth() {
+                // Call this occasionally to ensure animations are still running
+                if (this.planets) {
+                    this.planets.forEach((planet, index) => {
+                        if (planet && planet.clock && !planet.clock.running) {
+                            console.warn(`⚠️ Planet ${index} animation stopped, restarting...`);
+                            planet.clock.start();
+                        }
+                        
+                        // Ensure planet is visible
+                        const group = planet.getGroup();
+                        if (group && !group.visible) {
+                            console.warn(`⚠️ Planet ${index} became invisible, restoring...`);
+                            group.visible = true;
+                        }
+                    });
+                }
+                
+                // Check spaceship
+                if (this.spaceship && this.spaceship.clock && !this.spaceship.clock.running) {
+                    console.warn('⚠️ Spaceship animation stopped, restarting...');
+                    this.spaceship.clock.start();
+                }
+                
+                // Check nebula
+                if (this.portfolioNebula && this.portfolioNebula.clock && !this.portfolioNebula.clock.running) {
+                    console.warn('⚠️ Nebula animation stopped, restarting...');
+                    this.portfolioNebula.clock.start();
+                }
+            }
+
+            startAnimation() {
+                this.animationRunning = true;
+                let frameCount = 0;
+                
+                const animate = () => {
+                    if (!this.animationRunning) return;
+                    
+                    frameCount++;
+                    
+                    // Update planets
+                    this.planets.forEach(planet => {
+                        if (planet && planet.update) {
+                            planet.update();
+                        }
+                    });
+                    
+                    // Update Portfolio Nebula
+                    if (this.portfolioNebula && this.portfolioNebula.update) {
+                        this.portfolioNebula.update();
+                    }
+                    
+                    // Update spaceship
+                    if (this.spaceship && this.spaceship.update) {
+                        this.spaceship.update();
+                    }
+                    
+                    // UPDATE TRAVEL SYSTEM
+                    if (this.travelSystem) {
+                        this.travelSystem.update();
+                    }
+                    
+                    // Check animation health every 300 frames (about every 5 seconds at 60fps)
+                    if (frameCount % 300 === 0) {
+                        this.checkAnimationHealth();
+                    }
+                    
+                    this.renderer.render(this.scene, this.camera);
+                    requestAnimationFrame(animate);
+                };
+                animate();
+            }
+
+            showWebGLError() {
+                const webglError = document.getElementById('webgl-error');
+                const loadingScreen = document.getElementById('loading-screen');
+                
+                if (webglError) {
+                    webglError.classList.remove('hidden');
+                }
+                if (loadingScreen) {
+                    loadingScreen.classList.add('hidden');
+                }
+            }
+
+            dispose() {
+                this.animationRunning = false;
+                
+                this.planets.forEach(planet => {
+                    if (planet && planet.dispose) {
+                        planet.dispose();
+                    }
+                });
+                
+                if (this.portfolioNebula && this.portfolioNebula.dispose) {
+                    this.portfolioNebula.dispose();
+                }
+                
+                if (this.spaceship && this.spaceship.dispose) {
+                    this.spaceship.dispose();
+                }
+                
+                if (this.travelSystem && this.travelSystem.dispose) {
+                    this.travelSystem.dispose();
+                }
+                
+                if (this.portfolioViewer && this.portfolioViewer.dispose) {
+                    this.portfolioViewer.dispose();
+                }
+                
+                if (this.renderer) {
+                    this.renderer.dispose();
+                }
+            }
+        }
+
+        // Initialize the application when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Starting Complete Space CV Application...');
+            
+            // Create the application
+            window.spaceCVApp = new CompletSpaceCVApp();
+            
+            // SETUP RETURN TO ORBIT EVENT HANDLER
+            setupReturnToOrbitHandler();
+            
+            console.log('✅ Application initialized with enhanced modal styling and positioning');
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (window.spaceCVApp) {
+                window.spaceCVApp.dispose();
+            }
+        });
+
+        // Global error handlers
+        window.addEventListener('error', (event) => {
+            console.error('Global error:', event.error);
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('Unhandled promise rejection:', event.reason);
+        });
+    </script>
+</body>
+</html>
