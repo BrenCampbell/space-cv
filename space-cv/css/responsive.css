@@ -1,0 +1,782 @@
+/* ==========================================================================
+   SPACE CV - RESPONSIVE DESIGN
+   Component-based responsive system using CSS variables
+   ========================================================================== */
+
+/* ==========================================================================
+   LARGE DESKTOP (1440px and up)
+   ========================================================================== */
+
+   @media (min-width: 1440px) {
+    .modal {
+        max-width: 1000px;
+        padding: var(--spacing-5xl);
+    }
+    
+    .nav-link {
+        font-size: var(--font-size-lg);
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+    
+    .btn {
+        min-height: 52px;
+        font-size: var(--font-size-lg);
+    }
+    
+    .heading-primary {
+        font-size: var(--font-size-5xl);
+    }
+    
+    .panel {
+        padding: var(--spacing-3xl);
+    }
+}
+
+/* ==========================================================================
+   DESKTOP (1024px to 1439px)
+   ========================================================================== */
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+    .modal {
+        max-width: 900px;
+        padding: var(--spacing-4xl);
+    }
+    
+    .panel-top-left,
+    .panel-bottom-left {
+        left: var(--spacing-3xl);
+    }
+    
+    .panel-top-right,
+    .panel-bottom-right {
+        right: var(--spacing-3xl);
+    }
+}
+
+/* ==========================================================================
+   TABLET LANDSCAPE (768px to 1023px)
+   ========================================================================== */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    /* Panel Adjustments */
+    .panel {
+        padding: var(--spacing-lg);
+    }
+    
+    .panel-top-left,
+    .panel-bottom-left {
+        width: 200px;
+        left: var(--spacing-lg);
+    }
+    
+    .panel-top-right,
+    .panel-bottom-right {
+        width: 280px;
+        right: var(--spacing-lg);
+        top: var(--spacing-lg);
+    }
+    
+    .panel-title {
+        font-size: var(--font-size-md);
+    }
+    
+    .panel-body {
+        font-size: var(--font-size-sm);
+        padding: var(--spacing-md);
+    }
+    
+    /* Button Adjustments */
+    .btn {
+        min-height: 48px;
+        font-size: var(--font-size-md);
+    }
+    
+    .btn-sm {
+        min-height: 40px;
+    }
+    
+    /* Modal Adjustments */
+    .modal {
+        max-width: 700px;
+        padding: var(--spacing-3xl);
+        margin: var(--spacing-lg);
+    }
+    
+    .heading-primary {
+        font-size: var(--font-size-3xl);
+    }
+    
+    /* Content Grid Adjustments */
+    .highlight-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-lg);
+    }
+}
+
+/* ==========================================================================
+   TABLET PORTRAIT & SMALL LAPTOP (600px to 767px)
+   ========================================================================== */
+
+@media (min-width: 600px) and (max-width: 767px) {
+    /* Panel Adjustments */
+    .panel {
+        padding: var(--spacing-md);
+        font-size: var(--font-size-md);
+    }
+    
+    .panel-top-left,
+    .panel-bottom-left {
+        width: 180px;
+        left: var(--spacing-md);
+    }
+    
+    .panel-top-right,
+    .panel-bottom-right {
+        width: 250px;
+        right: var(--spacing-md);
+        top: var(--spacing-md);
+        bottom: auto;
+    }
+    
+    .panel-title {
+        font-size: var(--font-size-lg);
+    }
+    
+    .panel-body {
+        font-size: var(--font-size-sm);
+    }
+    
+    /* Navigation Adjustments */
+    .nav-link {
+        font-size: var(--font-size-sm);
+        padding: var(--spacing-sm) var(--spacing-md);
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    /* Button Adjustments */
+    .btn {
+        min-height: 44px;
+        font-size: var(--font-size-md);
+    }
+    
+    /* Modal Adjustments */
+    .modal {
+        max-width: 90%;
+        padding: var(--spacing-xl);
+        margin: var(--spacing-md);
+        max-height: 85vh;
+    }
+    
+    .heading-primary {
+        font-size: var(--font-size-2xl);
+    }
+    
+    /* Content Adjustments */
+    .content-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-lg);
+    }
+}
+
+/* ==========================================================================
+   MOBILE LANDSCAPE (480px to 599px)
+   ========================================================================== */
+
+@media (min-width: 480px) and (max-width: 599px) {
+    /* Panel Adjustments */
+    .panel {
+        padding: var(--spacing-sm);
+        top: var(--spacing-sm);
+        left: var(--spacing-sm);
+        right: var(--spacing-sm);
+        bottom: var(--spacing-sm);
+    }
+    
+    .panel-top-left,
+    .panel-bottom-left {
+        width: 160px;
+        left: var(--spacing-sm);
+    }
+    
+    .panel-top-right,
+    .panel-bottom-right {
+        width: 220px;
+        right: var(--spacing-sm);
+    }
+    
+    .panel-title {
+        font-size: var(--font-size-md);
+    }
+    
+    .panel-body {
+        font-size: var(--font-size-xs);
+        padding: var(--spacing-sm);
+    }
+    
+    /* Navigation Adjustments */
+    .nav-link {
+        font-size: var(--font-size-xs);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        margin-bottom: var(--spacing-xs);
+        min-height: 36px;
+    }
+    
+    /* Button Adjustments */
+    .btn {
+        min-height: 44px;
+        padding: var(--spacing-sm) var(--spacing-lg);
+        font-size: var(--font-size-sm);
+    }
+    
+    .modal-close {
+        top: var(--spacing-sm);
+        right: var(--spacing-lg);
+        font-size: var(--font-size-xl);
+        min-width: 40px;
+        min-height: 40px;
+    }
+    
+    /* Modal Adjustments */
+    .modal {
+        max-width: 95%;
+        padding: var(--spacing-lg);
+        margin: var(--spacing-xs);
+        max-height: 90vh;
+    }
+    
+    .heading-primary {
+        font-size: var(--font-size-xl);
+    }
+    
+    .heading-secondary {
+        font-size: var(--font-size-lg);
+    }
+    
+    /* Content Adjustments */
+    .content-body {
+        font-size: var(--font-size-md);
+        line-height: var(--line-height-normal);
+    }
+    
+    .content-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+    }
+    
+    .content-item-title {
+        font-size: var(--font-size-lg);
+    }
+    
+    .content-item-meta {
+        font-size: var(--font-size-sm);
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        padding-top: var(--spacing-lg);
+    }
+    
+    .btn {
+        width: 100%;
+        padding: var(--spacing-md);
+        font-size: var(--font-size-sm);
+    }
+    
+    /* Grid Adjustments */
+    .highlight-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .stat-item {
+        padding: var(--spacing-md);
+    }
+    
+    .stat-number {
+        font-size: var(--font-size-xl);
+    }
+}
+
+/* ==========================================================================
+   MOBILE PORTRAIT (320px to 479px)
+   ========================================================================== */
+
+@media (max-width: 479px) {
+    /* Panel Mobile Behavior */
+    .panel-top-left,
+    .panel-bottom-left {
+        width: 140px;
+        padding: var(--spacing-xs);
+        top: var(--spacing-xs);
+        left: var(--spacing-xs);
+        transform: translateX(-150px);
+        transition: transform var(--duration-normal) var(--ease-out);
+    }
+    
+    .panel-top-left.show,
+    .panel-bottom-left.show {
+        transform: translateX(0);
+    }
+    
+    .panel-top-right,
+    .panel-bottom-right {
+        width: 200px;
+        padding: var(--spacing-xs);
+        top: var(--spacing-xs);
+        right: var(--spacing-xs);
+        bottom: auto;
+        left: auto;
+    }
+    
+    /* Navigation Toggle for Mobile */
+    .nav-toggle {
+        display: block;
+        position: fixed;
+        top: var(--spacing-lg);
+        left: var(--spacing-lg);
+        z-index: var(--z-ui-normal);
+        background: var(--bg-glass-dark);
+        border: var(--border-width) solid var(--border-color);
+        border-radius: var(--radius-sm);
+        color: var(--color-text-primary);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition-fast);
+    }
+    
+    .nav-toggle:hover {
+        background: var(--bg-glass-lighter);
+    }
+    
+    .nav-icon::before {
+        content: '☰';
+        font-size: var(--font-size-lg);
+    }
+    
+    .panel-title {
+        font-size: var(--font-size-sm);
+    }
+    
+    .panel-body {
+        font-size: var(--font-size-xs);
+        padding: var(--spacing-xs);
+    }
+    
+    /* Navigation Adjustments */
+    .nav-link {
+        font-size: var(--font-size-xs);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        margin-bottom: var(--spacing-xs);
+        min-height: 32px;
+    }
+    
+    /* Button Adjustments */
+    .btn {
+        min-height: 44px;
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: var(--font-size-sm);
+    }
+    
+    .modal-close {
+        top: var(--spacing-xs);
+        right: var(--spacing-md);
+        font-size: var(--font-size-xl);
+        min-width: 36px;
+        min-height: 36px;
+        padding: var(--spacing-xs);
+    }
+    
+    /* Modal Adjustments */
+    .modal {
+        max-width: 98%;
+        padding: var(--spacing-md);
+        margin: var(--spacing-xs);
+        max-height: 92vh;
+        border-radius: var(--radius-md);
+    }
+    
+    .modal-header {
+        margin-bottom: var(--spacing-lg);
+        gap: var(--spacing-md);
+    }
+    
+    .heading-primary {
+        font-size: var(--font-size-xl);
+    }
+    
+    .heading-secondary {
+        font-size: var(--font-size-lg);
+    }
+    
+    .heading-tertiary {
+        font-size: var(--font-size-md);
+    }
+    
+    .indicator {
+        width: 15px;
+        height: 15px;
+    }
+    
+    /* Content Adjustments */
+    .content-body {
+        font-size: var(--font-size-sm);
+        line-height: var(--line-height-normal);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .content-item {
+        padding: var(--spacing-sm);
+        margin-bottom: var(--spacing-md);
+        border-radius: var(--radius-sm);
+    }
+    
+    .content-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .content-item-title {
+        font-size: var(--font-size-md);
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .content-item-meta,
+    .content-item-company {
+        font-size: var(--font-size-xs);
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        padding-top: var(--spacing-md);
+    }
+    
+    .btn {
+        width: 100%;
+        padding: var(--spacing-sm);
+        font-size: var(--font-size-sm);
+    }
+    
+    /* Content Lists */
+    .content-item ul {
+        margin: var(--spacing-xs) 0;
+        padding-left: var(--spacing-lg);
+    }
+    
+    .content-item li {
+        font-size: var(--font-size-xs);
+        margin-bottom: var(--spacing-xs);
+        line-height: var(--line-height-normal);
+    }
+    
+    /* Grid Adjustments */
+    .highlight-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+    
+    .highlight-item {
+        padding: var(--spacing-sm);
+        margin-bottom: var(--spacing-sm);
+        border-radius: var(--radius-sm);
+    }
+    
+    .highlight-item h4 {
+        font-size: var(--font-size-sm);
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-lg);
+    }
+    
+    .stat-item {
+        padding: var(--spacing-sm);
+        border-radius: var(--radius-sm);
+    }
+    
+    .stat-number {
+        font-size: var(--font-size-xl);
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .stat-label {
+        font-size: var(--font-size-xs);
+    }
+    
+    /* Contact Details */
+    .contact-details .highlight-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .contact-details h4 {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-accent);
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .contact-details a,
+    .contact-details span {
+        font-size: var(--font-size-xs);
+    }
+}
+
+/* ==========================================================================
+   TOUCH-SPECIFIC ADJUSTMENTS
+   ========================================================================== */
+
+@media (pointer: coarse) {
+    .nav-link,
+    .btn,
+    .modal-close {
+        min-height: 44px;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .panel {
+        touch-action: pan-y;
+    }
+    
+    /* Increase touch targets */
+    .content-item-header {
+        padding: var(--spacing-sm);
+        margin: calc(var(--spacing-sm) * -1);
+    }
+    
+    /* Remove hover effects on touch devices */
+    .hover-lift:hover,
+    .hover-scale:hover,
+    .hover-glow:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .btn:hover {
+        transform: none;
+    }
+    
+    .card:hover {
+        transform: none;
+    }
+}
+
+/* ==========================================================================
+   HIGH DPI SCREENS
+   ========================================================================== */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .loader {
+        border-radius: var(--radius-full);
+    }
+    
+    .progress-fill {
+        border-radius: var(--radius-sm);
+    }
+    
+    /* Ensure crisp borders on high DPI */
+    .panel,
+    .modal,
+    .card {
+        border-width: 0.5px;
+    }
+}
+
+/* ==========================================================================
+   LANDSCAPE ORIENTATION ON MOBILE
+   ========================================================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .modal {
+        max-height: 95vh;
+        padding: var(--spacing-sm);
+    }
+    
+    .modal-header {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .modal-footer {
+        padding-top: var(--spacing-sm);
+    }
+    
+    .panel {
+        padding: var(--spacing-xs);
+    }
+    
+    .loading-content {
+        transform: scale(0.8);
+    }
+}
+
+/* ==========================================================================
+   DARK MODE SUPPORT
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+    /* Dark mode is default, but this ensures compatibility */
+    :root {
+        --color-text-primary: #FFFFFF;
+        --color-text-secondary: #E0E0E0;
+        --bg-glass-dark: rgba(10, 10, 10, 0.9);
+    }
+}
+
+/* ==========================================================================
+   REDUCED MOTION SUPPORT
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .content-item,
+    .highlight-item,
+    .stat-item,
+    .nav-item {
+        animation-delay: 0s;
+        animation-duration: 0.01ms;
+    }
+    
+    .animate-rotate,
+    .animate-pulse,
+    .animate-glow {
+        animation: none;
+    }
+    
+    .transition,
+    .transition-fast,
+    .transition-slow {
+        transition: none;
+    }
+}
+
+/* ==========================================================================
+   HIGH CONTRAST MODE
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+    .panel,
+    .modal,
+    .card {
+        border-width: var(--border-width-thick);
+        border-color: var(--color-text-primary);
+    }
+    
+    .indicator {
+        border: var(--border-width) solid var(--color-text-primary);
+    }
+    
+    .text-glow {
+        text-shadow: 2px 2px 0px var(--color-black);
+    }
+    
+    .btn {
+        border: var(--border-width) solid currentColor;
+    }
+}
+
+/* ==========================================================================
+   PRINT STYLES
+   ========================================================================== */
+
+@media print {
+    .loading-screen,
+    #scene-container,
+    .panel,
+    .overlay,
+    .modal-footer {
+        display: none !important;
+    }
+    
+    .modal {
+        position: static !important;
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        border: none !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 20px !important;
+    }
+    
+    .content-body {
+        color: black !important;
+    }
+    
+    .heading-primary,
+    .heading-secondary,
+    .heading-tertiary {
+        color: black !important;
+    }
+    
+    .content-item {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}
+
+/* ==========================================================================
+   FEATURE QUERIES
+   ========================================================================== */
+
+/* Backdrop filter support */
+@supports (backdrop-filter: blur(10px)) {
+    .panel,
+    .modal {
+        backdrop-filter: var(--blur-md);
+    }
+}
+
+/* Grid support fallback */
+@supports not (display: grid) {
+    .highlight-grid,
+    .stats-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-md);
+    }
+    
+    .highlight-item,
+    .stat-item {
+        flex: 1 1 auto;
+        min-width: 200px;
+    }
+}
