@@ -629,7 +629,13 @@ class TravelSystem {
             planetInfo.classList.add('hidden');
         }
         
-        console.log('🚫 Planet interactions disabled');
+        // ADDED: Hide navigation during travel
+        const navigationPanel = document.getElementById('controls-info');
+        if (navigationPanel) {
+            navigationPanel.classList.add('travel-hidden');
+        }
+        
+        console.log('🚫 Planet interactions and navigation disabled');
     }
     
     /**
@@ -650,12 +656,18 @@ class TravelSystem {
             planetInfo.classList.add('hidden');
         }
         
+        // ADDED: Restore navigation after travel
+        const navigationPanel = document.getElementById('controls-info');
+        if (navigationPanel) {
+            navigationPanel.classList.remove('travel-hidden');
+        }
+        
         // Re-enable app interactions
         if (this.app.enableInteractions) {
             this.app.enableInteractions();
         }
         
-        console.log('✅ Planet interactions re-enabled');
+        console.log('✅ Planet interactions and navigation re-enabled');
     }
     
     /**

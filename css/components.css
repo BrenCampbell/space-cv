@@ -801,12 +801,20 @@ html, body {
    MODAL WITH PINNED FOOTER
    ========================================================================== */
 
-.modal-with-pinned-footer {
+   .modal-with-pinned-footer {
     display: flex;
     flex-direction: column;
     height: 100%;
-    max-height: 90vh;
+    max-height: 95vh;
     padding: 0;
+}
+
+/* CRITICAL: Ensure portfolio modal overrides standard modal */
+.modal-portfolio.modal-with-pinned-footer {
+    max-height: none !important;
+    height: 100vh !important;
+    width: 100vw !important;
+    max-width: none !important;
 }
 
 .modal-content-wrapper {
@@ -1617,4 +1625,205 @@ body.cockpit-active .content-item li {
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
     }
+}
+
+/* ==========================================================================
+   PORTFOLIO FULL-SCREEN MODAL STYLES
+   Add to components.css
+   ========================================================================== */
+
+/* Portfolio-specific full-screen modal */
+.modal-portfolio {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    
+    /* Maintain the same styling as regular modal */
+    background: rgba(0, 12, 24, 0.75);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 4px solid #0078B4;
+    
+    box-shadow: 
+        0 0 3px rgba(0, 120, 180, 0.4),
+        0 0 6px rgba(0, 100, 160, 0.3),
+        0 0 12px rgba(0, 80, 140, 0.2),
+        inset 0 0 3px rgba(0, 120, 180, 0.05);
+    
+    z-index: var(--z-modal);
+    
+    /* Portfolio layout */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Portfolio modal header */
+.modal-portfolio .modal-header {
+    flex: none;
+    padding: 20px 32px;
+    border-bottom: 1px solid rgba(0, 120, 180, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Portfolio modal body - full remaining space */
+.modal-portfolio .modal-content-wrapper {
+    flex: 1;
+    padding: 32px;
+    overflow-y: auto;
+    height: auto;
+    max-height: none;
+}
+
+/* Portfolio modal close button positioning */
+.modal-portfolio .modal-close {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin: 0;
+}
+
+/* Portfolio modal footer */
+.modal-portfolio .modal-footer-pinned {
+    flex: none;
+    position: sticky;
+    bottom: 0;
+}
+
+/* Portfolio viewer adjustments for full screen */
+.modal-portfolio .portfolio-viewport {
+    height: calc(100vh - 400px); /* Account for header, info, thumbnails, footer */
+    min-height: 600px;
+    max-height: none;
+}
+
+/* Mobile adjustments for portfolio modal */
+@media (max-width: 768px) {
+    .modal-portfolio .modal-header {
+        padding: 16px 20px;
+    }
+    
+    .modal-portfolio .modal-content-wrapper {
+        padding: 20px;
+    }
+    
+    .modal-portfolio .portfolio-viewport {
+        height: calc(100vh - 350px);
+        min-height: 400px;
+    }
+}
+
+/* Cockpit mode overrides for portfolio */
+body.cockpit-active .modal-portfolio {
+    /* Keep full screen even in cockpit mode */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+body.cockpit-active .modal-portfolio .portfolio-viewport {
+    height: calc(100vh - 300px);
+    min-height: 350px;
+}
+
+/* ==========================================================================
+   MINIMIZING NAVIGATION PANEL
+   ========================================================================== */
+
+.navigation-panel {
+    overflow: hidden;
+    transition: all 0.4s ease-out;
+}
+
+.navigation-panel .navigation-header {
+    cursor: pointer;
+    position: relative;
+}
+
+.navigation-panel .navigation-body {
+    transition: all 0.4s ease-out;
+    opacity: 1;
+    max-height: 200px;
+    overflow: hidden;
+}
+
+/* Minimized state */
+.navigation-panel.minimized .navigation-body {
+    opacity: 0;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* Mobile toggle button - hidden on desktop */
+.mobile-nav-toggle {
+    display: none;
+    position: absolute;
+    right: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 1px solid rgba(0, 120, 180, 0.3);
+    border-radius: 4px;
+    color: #B8E6FF;
+    width: 24px;
+    height: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-nav-toggle:hover {
+    border-color: #00FFFF;
+    background: rgba(0, 120, 180, 0.1);
+}
+
+.nav-arrow {
+    transition: transform 0.3s ease;
+    line-height: 1;
+}
+
+.navigation-panel.expanded .nav-arrow {
+    transform: rotate(180deg);
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .mobile-nav-toggle {
+        display: flex;
+    }
+    
+    .navigation-panel .navigation-header {
+        cursor: default;
+    }
+    
+    /* Mobile minimized state - same as desktop */
+    .navigation-panel.minimized .navigation-body {
+        opacity: 0;
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+
+/* Travel mode - completely hide navigation */
+.navigation-panel.travel-hidden {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(-20px) scale(0.95) !important;
+    transition: all 0.5s ease-out !important;
 }

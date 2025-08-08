@@ -205,11 +205,11 @@ class PortfolioViewer {
                     overflow: hidden;
                     position: relative;
                     
-                    /* Much taller aspect ratio - closer to a document/portrait */
+                    /* Dynamic height based on available space */
                     width: 100%;
                     height: 70vh;
                     min-height: 600px;
-                    max-height: 800px;
+                    max-height: none; /* Allow full expansion */
                 }
                 
                 .portfolio-image-container {
@@ -376,6 +376,63 @@ class PortfolioViewer {
                 body.cockpit-active .portfolio-description {
                     font-size: 11px;
                     line-height: 1.5;
+                }
+                    /* Full-screen portfolio mode enhancements */
+                .modal-portfolio .portfolio-viewport {
+                    height: calc(100vh - 300px);
+                    min-height: 700px;
+                    max-height: calc(100vh - 250px);
+                }
+                
+                .modal-portfolio .portfolio-main {
+                    margin-bottom: 32px;
+                }
+                
+                .modal-portfolio .portfolio-info {
+                    margin-bottom: 32px;
+                    padding: 24px;
+                }
+                
+                .modal-portfolio .portfolio-title {
+                    font-size: 22px;
+                    margin-bottom: 16px;
+                }
+                
+                .modal-portfolio .portfolio-description {
+                    font-size: 16px;
+                    line-height: 1.7;
+                }
+                
+                .modal-portfolio .portfolio-thumbnails {
+                    margin-bottom: 24px;
+                    gap: 16px;
+                }
+                
+                .modal-portfolio .portfolio-thumb {
+                    width: 60px;
+                    height: 40px;
+                }
+                
+                @media (max-width: 768px) {
+                    .modal-portfolio .portfolio-viewport {
+                        height: calc(100vh - 250px);
+                        min-height: 500px;
+                    }
+                    
+                    .modal-portfolio .portfolio-title {
+                        font-size: 18px;
+                    }
+                    
+                    .modal-portfolio .portfolio-description {
+                        font-size: 14px;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .modal-portfolio .portfolio-viewport {
+                        height: calc(100vh - 200px);
+                        min-height: 400px;
+                    }
                 }
             </style>
         `;

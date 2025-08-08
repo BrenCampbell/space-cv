@@ -92,11 +92,14 @@
     </div>
 
     <!-- Controls Info Panel -->
-    <div id="controls-info" class="ui-panel ui-panel-top-right">
-        <div class="ui-panel-header">
-            <div class="ui-panel-title">🎮 Navigation</div>
-        </div>
-        <div class="ui-panel-body">
+<div id="controls-info" class="ui-panel ui-panel-top-right navigation-panel">
+    <div class="ui-panel-header navigation-header">
+        <div class="ui-panel-title">🎮 Navigation</div>
+        <button class="mobile-nav-toggle" id="mobile-nav-toggle">
+            <span class="nav-arrow">▼</span>
+        </button>
+    </div>
+    <div class="ui-panel-body navigation-body">
         <div class="text-sm text-secondary">• Drag planet: Rotate planet</div>
         <div class="text-sm text-secondary">• Click planet: Travel to planet</div>
         <div class="text-sm text-secondary">• Hover planet: Show info</div>
@@ -199,9 +202,10 @@
         /**
          * Enhanced method to update content modal with planet-themed styling
          */
-        function updateContentModal(title, content, planetId) {
+         function updateContentModal(title, content, planetId) {
             const contentTitle = document.getElementById('content-title');
             const contentBody = document.getElementById('content-body');
+            const modal = document.querySelector('.modal');
             
             if (contentTitle) {
                 // Use planet name instead of section title
@@ -223,6 +227,21 @@
             
             if (contentBody) {
                 contentBody.innerHTML = content;
+            }
+            
+            // PORTFOLIO-SPECIFIC MODAL STYLING
+            if (modal) {
+                // Remove existing modal classes
+                modal.classList.remove('modal-with-pinned-footer', 'modal-portfolio');
+                
+                if (planetId === 'portfolio-nebula') {
+                    // Apply portfolio-specific full-screen modal
+                    modal.classList.add('modal-portfolio');
+                    console.log('🖼️ Applied full-screen portfolio modal styling');
+                } else {
+                    // Apply standard modal with pinned footer
+                    modal.classList.add('modal-with-pinned-footer');
+                }
             }
             
             // Update footer for travel mode
@@ -1421,6 +1440,72 @@
             setupReturnToOrbitHandler();
             
             console.log('✅ Application initialized with enhanced modal styling and positioning');
+            // NAVIGATION MINIMIZATION SYSTEM
+function setupNavigationMinimization() {
+    const navigationPanel = document.getElementById('controls-info');
+    const mobileToggle = document.getElementById('mobile-nav-toggle');
+    let minimizeTimer = null;
+    let isMinimized = false;
+    let isMobile = window.innerWidth <= 768;
+    
+    // Update mobile detection on resize
+    window.addEventListener('resize', () => {
+        isMobile = window.innerWidth <= 768;
+    });
+    
+    // Start expanded, then auto-minimize after 5 seconds on first load
+console.log('🔼 Navigation starts expanded for 5 seconds');
+minimizeTimer = setTimeout(() => {
+    if (navigationPanel) {
+        navigationPanel.classList.add('minimized');
+        isMinimized = true;
+        console.log('🔽 Navigation auto-minimized after 5 seconds');
+    }
+}, 7000);
+    
+    // Desktop hover behavior
+    if (navigationPanel) {
+        navigationPanel.addEventListener('mouseenter', () => {
+            if (!isMobile) {
+                navigationPanel.classList.remove('minimized');
+                isMinimized = false;
+                console.log('🔼 Navigation expanded on hover');
+            }
+        });
+        
+        navigationPanel.addEventListener('mouseleave', () => {
+            if (!isMobile) {
+                navigationPanel.classList.add('minimized');
+                isMinimized = true;
+                console.log('🔽 Navigation minimized on mouse leave');
+            }
+        });
+    }
+    
+    // Mobile button behavior
+    if (mobileToggle) {
+        mobileToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            if (isMinimized) {
+                navigationPanel.classList.remove('minimized');
+                navigationPanel.classList.add('expanded');
+                isMinimized = false;
+                console.log('🔼 Navigation expanded via mobile button');
+            } else {
+                navigationPanel.classList.add('minimized');
+                navigationPanel.classList.remove('expanded');
+                isMinimized = true;
+                console.log('🔽 Navigation minimized via mobile button');
+            }
+        });
+    }
+    
+    console.log('✅ Navigation minimization system setup complete');
+}
+
+// Call the setup function
+setupNavigationMinimization();
         });
 
         // Cleanup on page unload
