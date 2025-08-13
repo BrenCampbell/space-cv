@@ -718,6 +718,247 @@ html, body {
 }
 
 /* ==========================================================================
+   HOLOGRAPHIC PANEL VARIATIONS - MODERN STYLING SYSTEM
+   ========================================================================== */
+
+/* Navigation Panel - Neon Yellow (Cleaner) */
+/* Navigation Panel - Original Cyan Theme (Cleaner) */
+.panel-holographic-navigation {
+    /* Copy base holographic styles but with original cyan theme */
+    position: fixed;
+    z-index: var(--z-overlay);
+    
+    min-width: 220px;
+    max-width: 280px;
+    
+    border: 2px solid rgba(0, 255, 255, 0.5);  /* CHANGED: Back to cyan */
+    border-radius: 12px;
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    
+    transition: all var(--duration-normal) var(--ease-smooth);
+    animation: holographicPulseCyan 4s ease-in-out infinite;  /* CHANGED: Cyan animation */
+    
+    /* Reduced glow for cleaner look */
+    box-shadow: 
+        inset 0 0 15px rgba(0, 255, 255, 0.08),  /* CHANGED: Back to cyan */
+        0 0 15px rgba(0, 255, 255, 0.15),
+        0 0 30px rgba(0, 255, 255, 0.08),
+        0 4px 20px rgba(0, 0, 0, 0.3);
+    
+    background: linear-gradient(
+        135deg,
+        rgba(0, 255, 255, 0.06) 0%,  /* CHANGED: Back to cyan */
+        rgba(0, 200, 180, 0.08) 25%,
+        rgba(0, 160, 140, 0.06) 50%,
+        rgba(0, 255, 255, 0.04) 75%,
+        rgba(0, 220, 200, 0.08) 100%
+    );
+}
+
+.panel-holographic-navigation .panel-header::after {
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0, 255, 255, 0.15) 10%,  /* CHANGED: Back to cyan */
+        rgba(0, 255, 255, 0.6) 50%,
+        rgba(0, 255, 255, 0.15) 90%,
+        transparent 100%
+    );
+    box-shadow: 
+        0 0 3px rgba(0, 255, 255, 0.3),  /* CHANGED: Back to cyan */
+        0 0 6px rgba(0, 255, 255, 0.15);
+    animation: holographicLineCyan 3s ease-in-out infinite;  /* CHANGED: Cyan animation */
+}
+
+.panel-holographic-navigation .panel-title {
+    color: #00FFFF;  /* CHANGED: Back to cyan */
+    text-shadow: 
+        0 0 8px rgba(0, 255, 255, 0.6),  /* CHANGED: Back to cyan */
+        0 0 15px rgba(0, 255, 255, 0.3),
+        0 0 25px rgba(0, 255, 255, 0.15);
+    animation: holographicTextCyan 2s ease-in-out infinite;  /* CHANGED: Cyan animation */
+}
+
+.panel-holographic-navigation .panel-body,
+.panel-holographic-navigation .panel-body .text-sm {
+    color: rgba(0, 255, 255, 0.85);  /* CHANGED: Back to cyan */
+    text-shadow: 0 0 4px rgba(0, 255, 255, 0.2);
+}
+
+/* Travel Confirmation - Neon Red (Cleaner) */
+.panel-holographic-travel {
+    /* Similar to navigation but red theme */
+    border: 2px solid rgba(255, 50, 50, 0.5);
+    border-radius: 12px;
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    
+    transition: all var(--duration-normal) var(--ease-smooth);
+    animation: holographicPulseRed 4s ease-in-out infinite;
+    
+    /* Reduced glow for cleaner look */
+    box-shadow: 
+        inset 0 0 15px rgba(255, 50, 50, 0.08),
+        0 0 15px rgba(255, 50, 50, 0.15),
+        0 0 30px rgba(255, 50, 50, 0.08),
+        0 4px 20px rgba(0, 0, 0, 0.3);
+    
+    background: linear-gradient(
+        135deg,
+        rgba(255, 50, 50, 0.06) 0%,
+        rgba(200, 40, 40, 0.08) 25%,
+        rgba(160, 30, 30, 0.06) 50%,
+        rgba(255, 50, 50, 0.04) 75%,
+        rgba(220, 45, 45, 0.08) 100%
+    );
+}
+
+.panel-holographic-travel .panel-header::after {
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 50, 50, 0.15) 10%,
+        rgba(255, 50, 50, 0.6) 50%,
+        rgba(255, 50, 50, 0.15) 90%,
+        transparent 100%
+    );
+    box-shadow: 
+        0 0 3px rgba(255, 50, 50, 0.3),
+        0 0 6px rgba(255, 50, 50, 0.15);
+    animation: holographicLineRed 3s ease-in-out infinite;
+}
+
+.panel-holographic-travel .panel-title {
+    color: #FF3232;
+    text-shadow: 
+        0 0 8px rgba(255, 50, 50, 0.6),
+        0 0 15px rgba(255, 50, 50, 0.3),
+        0 0 25px rgba(255, 50, 50, 0.15);
+    animation: holographicTextRed 2s ease-in-out infinite;
+}
+
+.panel-holographic-travel .panel-body,
+.panel-holographic-travel .panel-body .text-sm {
+    color: rgba(255, 80, 80, 0.85);
+    text-shadow: 0 0 4px rgba(255, 50, 50, 0.2);
+}
+
+/* Content Modal - Neon Purple (Ultra Clean/Business) */
+.modal-holographic {
+    /* Clean business styling with subtle purple accents */
+    background: rgba(0, 8, 20, 0.85);
+    backdrop-filter: blur(15px) saturate(180%);
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
+    border: 2px solid rgba(150, 100, 255, 0.4);
+    border-radius: 16px;
+    
+    /* Very subtle glow for professional look */
+    box-shadow: 
+        inset 0 0 20px rgba(150, 100, 255, 0.05),
+        0 0 20px rgba(150, 100, 255, 0.1),
+        0 0 40px rgba(150, 100, 255, 0.05),
+        0 8px 32px rgba(0, 0, 0, 0.4);
+    
+    transition: all var(--duration-normal) var(--ease-smooth);
+}
+
+.modal-holographic .modal-header {
+    border-bottom: 1px solid rgba(150, 100, 255, 0.3);
+    background: linear-gradient(
+        135deg,
+        rgba(150, 100, 255, 0.08) 0%,
+        rgba(120, 80, 200, 0.06) 50%,
+        rgba(150, 100, 255, 0.04) 100%
+    );
+}
+
+.modal-holographic .modal-title,
+.modal-holographic #content-title {
+    color: #B19CFF;
+    text-shadow: 
+        0 0 6px rgba(150, 100, 255, 0.4),
+        0 0 12px rgba(150, 100, 255, 0.2);
+    font-family: 'Orbitron', 'Inter', sans-serif;
+    font-weight: 600;
+}
+
+/* Animation keyframes for new colors */
+@keyframes holographicPulseYellow {
+    0%, 100% {
+        box-shadow: 
+            inset 0 0 15px rgba(255, 255, 0, 0.08),
+            0 0 15px rgba(255, 255, 0, 0.15),
+            0 0 30px rgba(255, 255, 0, 0.08),
+            0 4px 20px rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 0, 0.4);
+    }
+    50% {
+        box-shadow: 
+            inset 0 0 20px rgba(255, 255, 0, 0.12),
+            0 0 20px rgba(255, 255, 0, 0.2),
+            0 0 40px rgba(255, 255, 0, 0.12),
+            0 6px 25px rgba(0, 0, 0, 0.35);
+        border-color: rgba(255, 255, 0, 0.6);
+    }
+}
+
+/* REPLACE the yellow animations with these cyan ones */
+@keyframes holographicPulseCyan {
+    0%, 100% {
+        box-shadow: 
+            inset 0 0 15px rgba(0, 255, 255, 0.08),
+            0 0 15px rgba(0, 255, 255, 0.15),
+            0 0 30px rgba(0, 255, 255, 0.08),
+            0 4px 20px rgba(0, 0, 0, 0.3);
+        border-color: rgba(0, 255, 255, 0.4);
+    }
+    50% {
+        box-shadow: 
+            inset 0 0 20px rgba(0, 255, 255, 0.12),
+            0 0 20px rgba(0, 255, 255, 0.2),
+            0 0 40px rgba(0, 255, 255, 0.12),
+            0 6px 25px rgba(0, 0, 0, 0.35);
+        border-color: rgba(0, 255, 255, 0.6);
+    }
+}
+
+@keyframes holographicLineCyan {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+@keyframes holographicTextCyan {
+    0%, 100% {
+        text-shadow: 
+            0 0 8px rgba(0, 255, 255, 0.6),
+            0 0 15px rgba(0, 255, 255, 0.3),
+            0 0 25px rgba(0, 255, 255, 0.15);
+    }
+    50% {
+        text-shadow: 
+            0 0 10px rgba(0, 255, 255, 0.8),
+            0 0 20px rgba(0, 255, 255, 0.4),
+            0 0 30px rgba(0, 255, 255, 0.2);
+    }
+}
+
+@keyframes holographicTextRed {
+    0%, 100% {
+        text-shadow: 
+            0 0 8px rgba(255, 50, 50, 0.6),
+            0 0 15px rgba(255, 50, 50, 0.3),
+            0 0 25px rgba(255, 50, 50, 0.15);
+    }
+    50% {
+        text-shadow: 
+            0 0 10px rgba(255, 50, 50, 0.8),
+            0 0 20px rgba(255, 50, 50, 0.4),
+            0 0 30px rgba(255, 50, 50, 0.2);
+    }
+}
+
+/* ==========================================================================
    OVERLAY & MODAL COMPONENTS
    ========================================================================== */
 

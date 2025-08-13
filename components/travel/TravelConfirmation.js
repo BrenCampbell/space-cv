@@ -34,7 +34,7 @@ class TravelConfirmation {
         
         // Create modal using panel base class instead of inline styles
         this.modal = document.createElement('div');
-        this.modal.className = 'ui-panel travel-confirmation-panel';
+        this.modal.className = 'panel-holographic-travel travel-confirmation-panel';
         this.modal.style.cssText = `
             position: relative;
             max-width: 450px;
