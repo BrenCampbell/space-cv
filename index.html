@@ -12,13 +12,15 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- CSS Files - Component-based styling -->
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <script type="module" src="data/ContentManager.js"></script>
+    <link rel="stylesheet" href="css/content-enhancements.css">
     
     <style>
         /* Critical inline styles for loading screen */
@@ -158,6 +160,7 @@
     <script type="module" src="components/portfolio/PortfolioViewer.js"></script>
     
     <script type="module">
+        import { ContentManager } from './data/ContentManager.js';
         import { CareerPlanet } from './components/planets/CareerPlanet.js';
         import { EducationWorld } from './components/planets/EducationWorld.js';
         import { SkillsAstroid } from './components/planets/SkillsAstroid.js';
@@ -452,66 +455,81 @@
 
         // Complete Space CV Application
         class CompletSpaceCVApp {
-            constructor() {
-                this.scene = null;
-                this.camera = null;
-                this.renderer = null;
-                this.planets = [];
-                this.portfolioNebula = null;
-                this.spaceship = null;
-                this.clock = new THREE.Clock();
-                this.isLoaded = false;
-                this.animationRunning = false;
-                
-                // Mouse interaction
-                this.mouse = { x: 0, y: 0 };
-                this.isDragging = false;
-                this.dragDistance = 0;
-                this.lastMousePos = { x: undefined, y: undefined };
-                this.mouseDownTime = 0;
-                this.raycaster = new THREE.Raycaster();
-                
-                // Planet-specific rotation
-                this.rotatingPlanet = null;
-                this.isRotatingPlanet = false;
-                
-                // Current content
-                this.currentContent = null;
-                
-                // TRAVEL SYSTEM
-                this.travelSystem = null;
-                
-                // PORTFOLIO VIEWER
-                this.portfolioViewer = null;
+    constructor() {
+        this.scene = null;
+        this.camera = null;
+        this.renderer = null;
+        this.planets = [];
+        this.portfolioNebula = null;
+        this.spaceship = null;
+        this.clock = new THREE.Clock();
+        this.isLoaded = false;
+        this.animationRunning = false;
+        
+        // Mouse interaction
+        this.mouse = { x: 0, y: 0 };
+        this.isDragging = false;
+        this.dragDistance = 0;
+        this.lastMousePos = { x: undefined, y: undefined };
+        this.mouseDownTime = 0;
+        this.raycaster = new THREE.Raycaster();
+        
+        // Planet-specific rotation
+        this.rotatingPlanet = null;
+        this.isRotatingPlanet = false;
+        
+        // Current content
+        this.currentContent = null;
+        
+        // TRAVEL SYSTEM
+        this.travelSystem = null;
+        
+        // PORTFOLIO VIEWER
+        this.portfolioViewer = null;
 
-                // ENHANCED POSITIONING SYSTEM
-                this.enhancedPositioning = null;
-                
-                // Bound event handlers for cleanup
-                this.boundMouseDown = null;
-                this.boundMouseMove = null;
-                this.boundMouseUp = null;
-                this.boundMouseClick = null;
-                
-                this.init();
-            }
+        // ENHANCED POSITIONING SYSTEM
+        this.enhancedPositioning = null;
+        
+        // CONTENT MANAGER - NEW!
+        this.contentManager = new ContentManager();
+        
+        // Bound event handlers for cleanup
+        this.boundMouseDown = null;
+        this.boundMouseMove = null;
+        this.boundMouseUp = null;
+        this.boundMouseClick = null;
+        
+        this.init();
+    }
 
-            init() {
-                console.log('🚀 Initializing Complete Space CV Application...');
-                
-                if (!this.checkWebGLSupport()) {
-                    this.showWebGLError();
-                    return;
-                }
+    async init() {
+    console.log('🚀 Initializing Complete Space CV Application...');
+    
+    if (!this.checkWebGLSupport()) {
+        this.showWebGLError();
+        return;
+    }
 
-                this.startLoadingSequence();
-                
-                setTimeout(() => {
-                    this.initScene();
-                }, 500);
-                
-                this.setupEventListeners();
-            }
+    // Load content first
+    await this.initializeContent();
+
+    this.startLoadingSequence();
+    
+    setTimeout(() => {
+        this.initScene();
+    }, 500);
+    
+    this.setupEventListeners();
+}
+
+async initializeContent() {
+    try {
+        await this.contentManager.loadContent();
+        console.log('✅ CV content loaded successfully');
+    } catch (error) {
+        console.error('❌ Content loading failed, using fallback:', error);
+    }
+}
 
             checkWebGLSupport() {
                 try {
@@ -896,270 +914,27 @@
             }
 
             getWorkContent() {
-                return `
-                    <div class="content-section">
-                        <h3>Professional Journey</h3>
-                        
-                        <div class="content-item">
-                            <div class="content-item-header">
-                                <div>
-                                    <h4 class="content-item-title">Co-founder & Director</h4>
-                                    <span class="content-item-company">Kilonova & GIGiFY</span>
-                                </div>
-                                <span class="content-item-meta">2024 - Present</span>
-                            </div>
-                            <p class="text-secondary">In 2023 I was approached by a commercial attorney to consult on an artist management business. With higher ambition, this project changed trajectory and took the form of an autonomous talent booking, artist management and event management platform as the GIGiFY app.</p>
-                            <ul class="m-lg text-muted">
-                                <li>Business strategy and creative & innovative development</li>
-                                <li>UX & UI design and project oversight</li>
-                                <li>Lead generation and industry partnerships</li>
-                                <li>Secured technical backing with Amazon Web Servers</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="content-item">
-                            <div class="content-item-header">
-                                <div>
-                                    <h4 class="content-item-title">Head of Production</h4>
-                                    <span class="content-item-company">MUSE Studios</span>
-                                </div>
-                                <span class="content-item-meta">September 2018 - Present</span>
-                            </div>
-                            <p class="text-secondary">Late in 2018 I was offered an opportunity to work out of a newly built, state-of-the-art studio. Since taking on the challenge we have produced multiple award winning recordings and projects.</p>
-                            <ul class="m-lg text-muted">
-                                <li>Composition, arrangement, and artist DNA development</li>
-                                <li>Recording, mixing and artist relations</li>
-                                <li>A&R partnerships with Sony Music, Universal Records, Virgin Records</li>
-                                <li>Discovered and developed chart-topping artists</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="content-item">
-                            <div class="content-item-header">
-                                <div>
-                                    <h4 class="content-item-title">Co-Founder & Director</h4>
-                                    <span class="content-item-company">Posduif Pty.</span>
-                                </div>
-                                <span class="content-item-meta">2019 - Present</span>
-                            </div>
-                            <p class="text-secondary">Following success in the mainstream English-speaking market, we partnered to branch out into the thriving Afrikaans market. Our debut album was awarded "Best Pop Album" at the prestigious SAMA's.</p>
-                        </div>
-                    </div>
-                `;
+                return this.contentManager.getWorkContent();
             }
 
             getEducationContent() {
-                return `
-                    <div class="content-section">
-                        <h3>Academic Foundation</h3>
-                        
-                        <div class="content-item">
-                            <div class="content-item-header">
-                                <div>
-                                    <h4 class="content-item-title">Pro Tools 101 & 110</h4>
-                                    <span class="content-item-company">Academy of Sound Engineering</span>
-                                </div>
-                                <span class="content-item-meta">2010 & 2011</span>
-                            </div>
-                            <p class="text-secondary">Professional certification in industry-standard audio production software and techniques.</p>
-                        </div>
-                        
-                        <div class="content-item">
-                            <div class="content-item-header">
-                                <div>
-                                    <h4 class="content-item-title">Matric - I.E.B - Exemption Pass</h4>
-                                    <span class="content-item-company">Trinity House High School</span>
-                                </div>
-                                <span class="content-item-meta">2008</span>
-                            </div>
-                            <p class="text-secondary">Independent Examinations Board certification with university exemption.</p>
-                        </div>
-                        
-                        <div class="content-item">
-                            <div class="content-item-header">
-                                <div>
-                                    <h4 class="content-item-title">International Baccalaureate Curriculum</h4>
-                                    <span class="content-item-company">Copenhagen International School</span>
-                                </div>
-                                <span class="content-item-meta">2002-2005</span>
-                            </div>
-                            <p class="text-secondary">Grades 4-6 under the IB curriculum, providing international perspective and multilingual education.</p>
-                        </div>
-                    </div>
-                `;
+                return this.contentManager.getEducationContent();
             }
 
             getSkillsContent() {
-                return `
-                    <div class="content-section">
-                        <h3>Core Technical Competencies</h3>
-                        
-                        <div class="highlight-grid grid-cols-2 gap-lg">
-                            <div class="highlight-item">
-                                <h4>🎯 Problem Solving</h4>
-                                <p class="text-secondary">Exceptional analytical thinking and creative problem-solving abilities, combining logical analysis with innovative approaches.</p>
-                            </div>
-                            <div class="highlight-item">
-                                <h4>🌐 Networking & Communication</h4>
-                                <p class="text-secondary">Extensive industry networks and proven ability to build lasting professional relationships.</p>
-                            </div>
-                            <div class="highlight-item">
-                                <h4>💻 Technology Adaptation</h4>
-                                <p class="text-secondary">Rapid learning and implementation of new technologies, from audio production to business management platforms.</p>
-                            </div>
-                            <div class="highlight-item">
-                                <h4>⚡ Innovation & Work Ethic</h4>
-                                <p class="text-secondary">Strong drive for innovative solutions combined with unwavering work ethic and commitment to excellence.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="stats-grid">
-                            <div class="stat-item">
-                                <span class="stat-number">16+</span>
-                                <span class="stat-label">Years Experience</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number">5+</span>
-                                <span class="stat-label">Companies Founded</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number">50+</span>
-                                <span class="stat-label">Projects Completed</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                return this.contentManager.getSkillsContent();
             }
 
             getProjectsContent() {
-                return `
-                    <div class="content-section">
-                        <h3>Recognition & Achievements</h3>
-                        
-                        <div class="content-item">
-                            <h4 class="content-item-title">🏆 Recent Platinum Achievements (2023-2024)</h4>
-                            <p class="text-secondary"><strong>Platinum Selling Singles:</strong> Eloff (2x), Wilma, Baarto, Rubber Duc - Multiple platinum certifications across various artists</p>
-                        </div>
-                        
-                        <div class="content-item">
-                            <h4 class="content-item-title">🎵 Music Awards</h4>
-                            <div class="highlight-grid">
-                                <div class="highlight-item">
-                                    <h4>2022 - Winner AITSA</h4>
-                                    <p class="text-secondary">Afrikaans Music Awards (Eloff)</p>
-                                </div>
-                                <div class="highlight-item">
-                                    <h4>2022 - Winner SAMA</h4>
-                                    <p class="text-secondary">South African Music Awards (Posduif) - Best Pop Album</p>
-                                </div>
-                                <div class="highlight-item">
-                                    <h4>2017 - 2x SAMA Nomination</h4>
-                                    <p class="text-secondary">Rubber Duc - "The Secret Sunrise" album</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="stats-grid">
-                            <div class="stat-item">
-                                <span class="stat-number">8</span>
-                                <span class="stat-label">Platinum Singles</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number">5+</span>
-                                <span class="stat-label">Major Labels</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number">10+</span>
-                                <span class="stat-label">Awards Won</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                return this.contentManager.getProjectsContent();
             }
 
             getCommunityContent() {
-                return `
-                    <div class="content-section">
-                        <h3>Giving Back to the Community</h3>
-                        <div class="highlight-item">
-                            <p class="text-accent font-medium">I have always appreciated when someone reaches out and lends a hand in hard times, and I am a strong believer in paying it forward.</p>
-                        </div>
-                        
-                        <div class="content-item">
-                            <h4 class="content-item-title">🏠 RAK (Random Acts of Kindness) Drive</h4>
-                            <p class="text-secondary">Actively involved in painting and renovating homes of the less fortunate in Paarl, Western Cape. This hands-on community outreach project helps improve living conditions for families in need.</p>
-                        </div>
-                        
-                        <div class="content-item">
-                            <h4 class="content-item-title">🎄 Christmas Donation Drives</h4>
-                            <p class="text-secondary">Organize and participate in multiple Christmas donation drives including:</p>
-                            <ul class="m-lg text-muted">
-                                <li>Food & basic grocery parcels for families</li>
-                                <li>Blankets for those in need during winter</li>
-                                <li>Toys for preschools in local townships</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="content-item">
-                            <h4 class="content-item-title">🎵 Music Education & Mentorship</h4>
-                            <p class="text-secondary">Through my work in the music industry, I provide mentorship and guidance to young, up-and-coming artists. We have discovered, developed and written artist DNA for multiple artists who have gone on to achieve chart-topping success.</p>
-                        </div>
-                        
-                        <div class="stats-grid">
-                            <div class="stat-item">
-                                <span class="stat-number">10+</span>
-                                <span class="stat-label">Artists Mentored</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number">100+</span>
-                                <span class="stat-label">Families Helped</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number">5+</span>
-                                <span class="stat-label">Years Active</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                return this.contentManager.getCommunityContent();
             }
 
             getContactContent() {
-                return `
-                    <div class="content-section">
-                        <h3>Let's Connect</h3>
-                        <p class="text-secondary">Ready to collaborate or discuss opportunities? I'd love to hear from you.</p>
-                        
-                        <div class="highlight-grid gap-md">
-                            <div class="highlight-item">
-                                <h4>📧 Email</h4>
-                                <a href="mailto:Productions.brc@gmail.com" class="text-accent">Productions.brc@gmail.com</a>
-                            </div>
-                            <div class="highlight-item">
-                                <h4>📱 Phone</h4>
-                                <a href="tel:+27824550744" class="text-accent">+27 82 455 0744</a>
-                            </div>
-                            <div class="highlight-item">
-                                <h4>📍 Location</h4>
-                                <span class="text-secondary">Johannesburg, South Africa</span>
-                            </div>
-                        </div>
-                        
-                        <div class="content-item">
-                            <h4 class="content-item-title">Available for:</h4>
-                            <ul class="m-lg text-secondary">
-                                <li>🎯 Strategic consulting and business development</li>
-                                <li>🎵 Music production and audio engineering projects</li>
-                                <li>💼 UX/UI design and innovative solution development</li>
-                                <li>🤝 Partnerships and collaborative ventures</li>
-                                <li>🎤 Speaking engagements and industry events</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="highlight-item text-center">
-                            <p class="text-secondary font-medium">"I believe that I will be a valuable addition to your team with the diverse experience I bring. I work well within a team and have extensive networks into which I can tap."</p>
-                        </div>
-                    </div>
-                `;
+                return this.contentManager.getContactContent();
             }
 
             // PORTFOLIO CONTENT METHOD - This is the key addition

@@ -1,0 +1,322 @@
+{
+    "personal": {
+      "name": "Brendan Ross Campbell",
+      "title": "Director & Innovative Solutions Developer",
+      "location": "Johannesburg, South Africa",
+      "birthDate": "August 22, 1990",
+      "taglines": [
+        "Director",
+        "Innovative Solutions Developer", 
+        "Recording Engineer & Producer",
+        "Musician, Composer & Music Director"
+      ], 
+      "introduction": "I am hard-working, resourceful and always solution driven. I have developed my reputation in the audio production, music and eventing industries for over 16 years. From the outset of my professional career I have worked for myself or in a small team, branching into various different industries curating a diverse set of skills and business operations experience."
+    },
+    
+    "workExperience": {
+      "title": "Work Experience",
+      "subtitle": "Professional Journey",
+      "experiences": [
+        {
+          "id": "kilonova",
+          "position": "Co-founder & Director",
+          "company": "Kilonova Pty.",
+          "period": "2024 - Present",
+          "description": "Driven by the need to shake up the events and entertainment industry I teamed up with a commercial attorney to develop an autonomous talent booking, artist management and event management platform called GIGiFY. This tickled our brains and motivated us to branch into software development and currently have various Legal and FinTech SaaS products in the pipeline.",
+          "highlights": [
+            "Development Partnership with Amazon Web Services",
+            "Curated full-stack coding expertise through self-learning",
+            "Built the skillset and structure to provide end-to-end SaaS solutions",
+            "Positive outlook with feedback from industry professionals keen to integrate these tools into their businesses"
+          ],
+          "Skills Developed": ["Innovative Business Solutions", "Platform Architecture", "UX & UI Design", "AI Assisted Full-Stack Development"]
+        },
+        {
+          "id": "muse-studios",
+          "position": "Head of Production",
+          "company": "Muse Studios",
+          "period": "2018 - Present",
+          "description": "Offered the opportunity to work out of a newly built, state-of-the-art studio. This also introduced me to a number of key players in the Afrikaans music industry – into which I had been eager to tap for some time.",
+          "highlights": [
+            "A&R Partnerships with major labels",
+            "Multiple Awards & Platinum/Gold Status Records",
+            "Over 300 commercial releases",
+            "Developed artist DNA for emerging talent"
+          ],
+          "Skills Developed": ["A&R Development", "Product Release Strategy", "Composition & Arrangement", "Podcast & Talk Show Production"]
+        },
+        {
+          "id": "posduif",
+          "position": "Director, Musical Director & Performer",
+          "company": "Posduif",
+          "period": "2017 - Present",
+          "description": "Following success in the mainstream English-speaking market, the core members of Rubber Duc pulled another singer in to expand our market into the thriving Afrikaans sector.",
+          "highlights": [
+            "Won the sought-after Best Pop Album at the Prestigious SAMA's",
+            "Chart-topping releases",
+            "Brand Partnerships including Spier Wines, Distelle and Sony Music among others",
+            "International Travel & Market Exposure"
+          ],
+          "Skills Developed": ["Audience Targeting & Market Positioning", "Live Event Creative and Strategy", "Composition & Arrangement", "Travel & Logistics"]
+        },
+        {
+          "id": "rubber-duc",
+          "position": "Director, Musical Director & Performer",
+          "company": "Rubber Duc",
+          "period": "2014 - Present",
+          "description": "Comprehensive and decorated career in the live music industry. Including business structure, creative development, live performances, event creation & management.",
+          "highlights": [
+            "Planned and Executed high-profile events",
+            "Chart-topping releases",
+            "Multiple SAMA (South African Music Awards) Nominations",
+            "International Travel & Market Exposure"
+          ],
+          "Skills Developed": ["Audience Targeting & Market Positioning", "Live Event Creative and Strategy", "Composition & Arrangement", "Travel & Logistics"]
+        },
+        {
+          "id": "brc-productions",
+          "position": "Founder, Producer & Composer, Audio Engineer",
+          "company": "BRC Productions",
+          "period": "2012 - 2019",
+          "description": "Founded and operated a comprehensive audio production company specializing in recording, mixing, mastering, and live sound engineering.",
+          "highlights": [
+            "Business Operations",
+            "Multiple Awards & Chart-Topping Releases",
+            "Skills Development",
+            "Marketing & Lead Generation"
+          ],
+          "Skills Developed": ["Pro Tools", "Logic Pro", "Artist Development", "Sound Design", "Composition & Arrangement"]
+        }
+      ]
+    },
+  
+    "education": {
+      "title": "Education",
+      "subtitle": "Academic Foundation",
+      "certifications": [
+        {
+          "name": "UX & UI",
+          "issuer": "Udemy - Self-Directed Learning",
+          "year": "2024-2025"
+        },
+        {
+          "name": "Pro Tools 101 & 110",
+          "issuer": "Academy of Sound Engineering",
+          "year": "2010"
+        }
+      ],
+      "qualifications": [
+        {
+          "id": "matric",
+          "degree": "National Senior Certificate (Matric)",
+          "institution": "Trinity House High School",
+          "location": "Johannesburg, South Africa",
+          "period": "2006-2008",
+          "description": "Completed high school education with focus on mathematics, science, geography and creative arts."
+        },
+        {
+          "id": "copenhagen",
+          "degree": "International Baccalaureate Programme",
+          "institution": "Copenhagen International School",
+          "location": "Copenhagen, Denmark",
+          "period": "2002-2005",
+          "description": "Grades 4-6 under the IB curriculum, providing international perspective and multilingual education."
+        }
+      ]
+    },
+  
+    "skills": {
+      "title": "Technical Skills",
+      "subtitle": "Core Technical Competencies",
+      "coreSkills": [
+        {
+          "id": "problem-solving",
+          "name": "Problem Solving",
+          "icon": "🎯",
+          "description": "Analytical thinking and creative problem-solving abilities, combining logic with innovative approaches.",
+          "level": 95
+        },
+        {
+          "id": "networking",
+          "name": "Networking & Communication",
+          "icon": "🌐", 
+          "description": "Extensive industry networks and proven ability to build lasting professional relationships.",
+          "level": 90
+        },
+        {
+          "id": "technology",
+          "name": "Technology Adaptation",
+          "icon": "💻",
+          "description": "Rapid learning and implementation of new technologies, from audio production to software development solutions.",
+          "level": 94
+        },
+        {
+          "id": "innovation",
+          "name": "Innovation & Work Ethic",
+          "icon": "⚡",
+          "description": "Strong ability to find innovative and streamlined processes in environments where it is overlooked.",
+          "level": 92
+        }
+      ],
+      "technicalSkills": [
+        {
+          "category": "Business Development",
+          "skills": ["Innovative Solutions", "Project Management", "Market Segmentation & Acquisition", "Client Relations"]
+        },
+        {
+          "category": "Software Development",
+          "skills": ["Platform Architecture", "UX & UI", "", "Full-Stack Development", "Platform Architecture"]
+        },
+        {
+          "category": "Audio Production",
+          "skills": ["Pro Tools", "Logic Pro", "Studio Design", "Composition", "Recording, Mixing & Mastering"]
+        }
+      ]
+    },
+  
+    "projects": {
+      "title": "Accolades & Achievements", 
+      "subtitle": "Notable Accomplishments",
+      "achievements": [
+        {
+          "id": "gigify-platform",
+          "title": "🚀 GIGiFY Platform Development",
+          "description": "Co-created autonomous talent booking and artist management platform with AWS technical backing.",
+          "metrics": ["AWS Partnership", "Industry Recognition", "Platform Innovation"],
+          "year": "2023-2024"
+        },
+        {
+          "id": "chart-success",
+          "title": "🎵 Chart-Topping Productions",
+          "description": "Produced and engineered multiple releases that achieved commercial chart success across various genres.",
+          "metrics": ["100+ Releases", "Multiple Chart Positions", "Cross-Genre Success"],
+          "year": "2008-2024"
+        },
+        {
+          "id": "studio-build",
+          "title": "🏗️ State-of-the-Art Studio",
+          "description": "Designed and built professional recording facility with cutting-edge equipment and acoustic design.",
+          "metrics": ["Professional Facility", "Acoustic Excellence", "Equipment Innovation"],
+          "year": "2018"
+        },
+        {
+          "id": "artist-development",
+          "title": "🌟 Artist Development Program",
+          "description": "Mentored and developed emerging artists, creating comprehensive artist DNA and career strategies.",
+          "metrics": ["10+ Artists Mentored", "Career Development", "Industry Integration"],
+          "year": "2015-2024"
+        }
+      ],
+      "stats": [
+        {
+          "number": "500+",
+          "label": "Commercial Releases"
+        },
+        {
+          "number": "16+",
+          "label": "Years Experience"
+        },
+        {
+          "number": "50+",
+          "label": "Artists Developed"
+        },
+        {
+          "number": "4",
+          "label": "Successful Start-up Ventures"
+        }
+      ]
+    },
+  
+    "community": {
+      "title": "Community Work",
+      "subtitle": "Giving Back to Communities",
+      "philosophy": "I have always appreciated when someone reaches out and lends a hand in hard times, and I am a strong believer in paying it forward.",
+      "initiatives": [
+        {
+          "id": "rak-drive",
+          "title": "RAK Nominations (Random Acts of Kindness)",
+          "description": "Partnered up with the Good Things Guy team to drive a Random Acts of Kindness initiative promoting a Pay it Forward mentality"
+        },
+        {
+          "id": "christmas-drives",
+          "title": "Christmas Donation Drives 🎄",
+          "description": "Organize and participate in multiple Christmas donation drives including:",
+          "activities": [
+            "Food & basic grocery parcels for families",
+            "Blankets for those in need during winter", 
+            "Toys for preschools in local townships"
+          ]
+        },
+        {
+          "id": "spca-drive",
+          "title": "SPCA Food Drive",
+          "description": "Used Public Profiles to Promote Dog & Cat Food Donations",
+          "activities": [
+            "Posts on public social media profiles to promote the cause",
+            "Live streaming events for food dropoffs"
+          ]
+        },
+        {
+          "id": "the-barn",
+          "title": "The Barn Christian Fellowship Outreach",
+          "description": "Active participation in painting and renovating homes of less fortunate families in Paarl, Western Cape. This hands-on community outreach project helps improve living conditions for families in need."
+        }
+      ],
+      "stats": [
+        {
+          "number": "10+",
+          "label": "Artists Mentored"
+        },
+        {
+          "number": "12+", 
+          "label": "Organisations Partnered With"
+        },
+        {
+          "number": "18+",
+          "label": "Years Active"
+        }
+      ]
+    },
+  
+    "contact": {
+      "title": "Let's Connect",
+      "subtitle": "Ready to collaborate or discuss opportunities? I'd love to hear from you.",
+      "description": "References Available on request",
+      "contactMethods": [
+        {
+          "type": "email",
+          "value": "productions.brc@gmail.com",
+          "label": "Email",
+          "icon": "📧",
+          "primary": true
+        },
+        {
+          "type": "phone",
+          "value": "+27 82 455 0744",
+          "label": "Phone",
+          "icon": "📱",
+          "primary": true
+        },
+        {
+          "type": "linkedin",
+          "value": "https://www.linkedin.com/in/brendan-campbell-44363721b/",
+          "label": "LinkedIn",
+          "icon": "💼",
+          "primary": true
+        }
+
+      ],
+      "availability": {
+        "status": "Available for new opportunities",
+        "responseTime": "Within 24 hours",
+        "preferredContact": "email"
+      }
+    },
+  
+    "metadata": {
+      "version": "1.0.0",
+      "lastUpdated": "2024-08-18",
+      "language": "en",
+      "theme": "space-cv"
+    }
+  }

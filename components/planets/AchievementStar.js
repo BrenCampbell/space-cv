@@ -367,12 +367,6 @@ class AchievementStar {
         setTimeout(() => {
             this.targetScale = this.isHovered ? 1.05 : 1.0;
         }, 200);
-        
-        if (typeof window !== 'undefined') {
-            document.dispatchEvent(new CustomEvent('showProjectsContent', {
-                detail: { planetId: 'projects' }
-            }));
-        }
     }
     
     getGroup() {
