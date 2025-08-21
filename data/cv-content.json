@@ -179,37 +179,72 @@
       "subtitle": "Notable Accomplishments",
       "achievements": [
         {
-          "id": "gigify-platform",
-          "title": "🚀 GIGiFY Platform Development",
-          "description": "Co-created autonomous talent booking and artist management platform with AWS technical backing.",
-          "metrics": ["AWS Partnership", "Industry Recognition", "Platform Innovation"],
-          "year": "2023-2024"
+          "id": "aws-partnership",
+          "title": "Amazon Web Services Partnership",
+          "description": "Our startup, GIGiFY, was awarded a Development Partnership with AWS",
+          "metrics": ["Founder", "UX & UI", "Full-Stack Developer", "Business Strategy"],
+          "year": "2024"
         },
         {
-          "id": "chart-success",
-          "title": "🎵 Chart-Topping Productions",
-          "description": "Produced and engineered multiple releases that achieved commercial chart success across various genres.",
-          "metrics": ["100+ Releases", "Multiple Chart Positions", "Cross-Genre Success"],
-          "year": "2008-2024"
+          "id": "record-achievements",
+          "title": "Gold & Platinum Records",
+          "description": "Multiple Gold and Platinum selling singles, from both, personal projects as well as studio clients",
+          "metrics": ["Producer", "Writer", "Artist", "Mixing Engineer"],
+          "year": "2015-Current"
         },
         {
-          "id": "studio-build",
-          "title": "🏗️ State-of-the-Art Studio",
-          "description": "Designed and built professional recording facility with cutting-edge equipment and acoustic design.",
-          "metrics": ["Professional Facility", "Acoustic Excellence", "Equipment Innovation"],
-          "year": "2018"
+          "id": "sama-win",
+          "title": "SAMA Win",
+          "description": "Posduif - Niks Vergelyk won the coveted Best Pop Album in the Afrikaans Category",
+          "metrics": ["Artist", "Writer", "Producer"],
+          "year": "2017"
         },
         {
-          "id": "artist-development",
-          "title": "🌟 Artist Development Program",
-          "description": "Mentored and developed emerging artists, creating comprehensive artist DNA and career strategies.",
-          "metrics": ["10+ Artists Mentored", "Career Development", "Industry Integration"],
-          "year": "2015-2024"
+          "id": "aitsa-win",
+          "title": "AITSA Win",
+          "description": "Eloff, one of the artists we developed, wrote with, and pitched to labels won Best Newcomer at the AITSA's",
+          "metrics": ["Artist Development", "Writer", "Producer", "Non-Featured Performer"],
+          "year": "2022"
+        },
+        {
+          "id": "first-platinum",
+          "title": "First Platinum Single",
+          "description": "Eloff - Johnny Blou was my first release to officially reach Platinum Status",
+          "metrics": ["Artist Development", "Writer", "Producer", "Non-Featured Performer"],
+          "year": "2022"
+        },
+        {
+          "id": "sama-nominations",
+          "title": "SAMA Nominations",
+          "description": "Rubber Duc - The Secret Sunrise recieved nominations for Best Produced Album and Best Mixed Album",
+          "metrics": ["Artist", "Writer", "Producer"],
+          "year": "2017"
+        },
+        {
+          "id": "isc-runner-up",
+          "title": "Runner Up - International Songwriting Contest",
+          "description": "Rubber Duc - Leaving Town took 2nd place in the ISC judged by an esteemed international panel",
+          "metrics": ["Artist", "Writer", "Producer"],
+          "year": "2017"
+        },
+        {
+          "id": "documentary-soundtrack",
+          "title": "Both Ends Burning Soundtrack",
+          "description": "Daniel Baron - Both Ends Burning was selected for international film documentary Both Ends Burning",
+          "metrics": ["Producer", "Mixing Engineer", "Non-Featured Performer"],
+          "year": "2017"
+        },
+        {
+          "id": "guma-awards",
+          "title": "GUMA Win",
+          "description": "Daniel Baron - Different Feeling took home first place at the GUMA Awards",
+          "metrics": ["Producer", "Mixing Engineer", "Non-Featured Performer"],
+          "year": "2013"
         }
       ],
       "stats": [
         {
-          "number": "500+",
+          "number": "400+",
           "label": "Commercial Releases"
         },
         {
